@@ -9,10 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+ * This will be implemented by spring boot to eNTransactionRepositoriy bean.
  *
  * @author btinsae
  */
 @Repository
-public interface ENTransactionRepository extends JpaRepository<ENTransaction, Integer>{
-    
+public interface ENTransactionRepository extends JpaRepository<ENTransaction, Integer> {
+
 }

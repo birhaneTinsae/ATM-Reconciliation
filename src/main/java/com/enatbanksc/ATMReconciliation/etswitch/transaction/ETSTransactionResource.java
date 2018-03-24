@@ -8,18 +8,27 @@ package com.enatbanksc.ATMReconciliation.etswitch.transaction;
 import com.enatbanksc.ATMReconciliation.utils.Common;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author btinsae
  */
+@RestController
+@RequestMapping("ets-transaction")
 public class ETSTransactionResource implements Common<ETSTransaction> {
 
     @Autowired
@@ -40,7 +49,7 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
         return service.show(id);
     }
 
-    @PutMapping()
+    @PutMapping
     @Override
     public @ResponseBody
     ETSTransaction update(@RequestBody ETSTransaction t) {
@@ -53,10 +62,17 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
         return service.delete(id);
     }
 
-    @GetMapping()
+    @GetMapping
     @Override
+    @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<ETSTransaction> getAll() {
+//        List<ETSTransaction> transactions=
+//        transactions.forEach((transaction) -> {
+//            Link link=ControllerLinkBuilder.linkTo(ETSTransactionResource.class).slash(transaction.getCardNumber()).withSelfRel();
+//            transaction.add(link);
+//        });
+            
         return service.getAll();
     }
 

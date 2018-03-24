@@ -5,11 +5,15 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
+import com.enatbanksc.ATMReconciliation.config.BatchConfiguration;
 import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.utils.SearchTransaction;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +23,13 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  *
  */
-@Service
 public class ReconciliationService {
 
-    @Autowired
     SearchTransaction searchTransaction;
+
+    public ReconciliationService(SearchTransaction searchTransaction) {
+        this.searchTransaction = searchTransaction;
+    }
 
     /**
      * Search transactions that exist in CBS but missed from Switch vendor
@@ -52,4 +58,5 @@ public class ReconciliationService {
         });
         return missingTransactions;
     }
+
 }

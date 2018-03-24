@@ -78,6 +78,6 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      * @return
      */
     public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
-        return repository.findTransactionDateBetween(from, to);
+        return repository.findByTransactionDateBetween(from, to);
     }
 }

@@ -22,17 +22,26 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author btinsae
  */
+//This means that this class is a Rest Controller
 @RestController
+
+// This means URL's start with /demo (after Application path)
 @RequestMapping("/enat-transaction")
 public class ENTransactionResource implements Common<ENTransaction> {
 
+    // This means to get the bean called eNTransactionService
     @Autowired
     ENTransactionService service;
 
     @PostMapping
     @Override
     public @ResponseBody
+    // @ResponseBody means the returned Object is the response, not a view name
     ENTransaction store(@RequestBody ENTransaction t) {
+      
+        /**
+         * This return JSON representation of the stored object
+         */
         return service.store(t);
 
     }

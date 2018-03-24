@@ -9,16 +9,22 @@ import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author btinsae
  * @version 1.0
  */
+
 public class SearchTransaction {
 
-    @Autowired
+  
     private SortTransactions sort;
+
+    public SearchTransaction(SortTransactions sort) {
+        this.sort = sort;
+    }
 
     /**
      * Search for the transaction given stan
