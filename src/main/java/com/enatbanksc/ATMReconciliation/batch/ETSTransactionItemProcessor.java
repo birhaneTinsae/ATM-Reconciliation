@@ -32,9 +32,9 @@ public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransaction
         String authIdRespF38 = i.getAuthIdRespF38();
         String FeUtrnno = i.getFeUtrnno();
         String BoUtrnno = i.getBoUtrnno();
-        float feeAmountOne = i.getFeeAmountOne();
-        float feeAmountTwo = i.getFeeAmountTwo();
-        ETSTransaction transformedTransaction = new ETSTransaction(issuer, acquirer, MTI, cardNumber, amount, currency, transactionDate, transactionDesc, terminalId, transactionPlace, stan, refnumF37, authIdRespF38, FeUtrnno, BoUtrnno, feeAmountOne, feeAmountTwo);
+//        float feeAmountOne = i.getFeeAmountOne();
+//        float feeAmountTwo = i.getFeeAmountTwo();
+        ETSTransaction transformedTransaction = new ETSTransaction(issuer, acquirer, MTI, cardNumber, amount, currency, transactionDate, transactionDesc, terminalId, transactionPlace, stan, refnumF37, authIdRespF38, FeUtrnno, BoUtrnno/*, feeAmountOne, feeAmountTwo*/);
         return transformedTransaction;
     }
 

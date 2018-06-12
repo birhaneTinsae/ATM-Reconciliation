@@ -10,13 +10,14 @@ import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author btinsae
  * @version 1.0
  */
+
 public class SortTransactions {
 
     /**
@@ -25,10 +26,14 @@ public class SortTransactions {
      * @param transactions
      * @return sorted Switch vendor transactions.
      */
-    public List<ETSTransaction> sortETSTransactions(List<ETSTransaction> transactions) {
+    public static List<ETSTransaction> sortETSTransactions(List<ETSTransaction> transactions) {
         // Comparator<ETSTransaction> comparator = Comparator.comparing(ETSTransaction::getStan);
+        if (transactions == null || transactions.isEmpty()) {
+            return null;
+        }
         Comparator<ETSTransaction> comparator = Comparator.comparingInt(ETSTransaction::getStan);
         Collections.sort(transactions, comparator);
+//        System.out.println(transactions);
         return transactions;
     }
 
@@ -38,7 +43,10 @@ public class SortTransactions {
      * @param transactions
      * @return sorted CBS transactions.
      */
-    public List<ENTransaction> sortENTransactions(List<ENTransaction> transactions) {
+    public static List<ENTransaction> sortENTransactions(List<ENTransaction> transactions) {
+        if (transactions == null || transactions.isEmpty()) {
+            return null;
+        }
         Comparator<ENTransaction> comparator;
         comparator = Comparator.comparingInt(ENTransaction::getId);
         Collections.sort(transactions, comparator);

@@ -77,7 +77,7 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      * @param to
      * @return
      */
-    public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
-        return repository.findByTransactionDateBetween(from, to);
+    public List<ETSTransaction> getTransactionsBetween(Date from, Date to, String terminalId) {
+        return repository.findByTransactionDateBetweenAndTerminalId(from, to, terminalId);
     }
 }

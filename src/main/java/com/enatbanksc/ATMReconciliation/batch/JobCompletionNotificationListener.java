@@ -52,9 +52,9 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
                             rs.getString(13),
                             rs.getString(7),
                             rs.getString(3),
-                            rs.getString(2),
+                            rs.getString(2)/*,
                             rs.getFloat(10),
-                            rs.getFloat(11))
+                            rs.getFloat(11)*/)
             ).forEach(transaction -> LOG.info("Found <" + transaction + "> in the database."));
         }
     }

@@ -70,4 +70,10 @@ public class BranchService implements Common<Branch> {
         return repository.findAll();
     }
 
+    public Branch getBranchByTerminalId(String terminalId) {
+        return repository.findByTerminalId(terminalId);
+    }
+    public Branch getBranchByCode(String code){
+        return repository.findByCode(code);
+    }
 }

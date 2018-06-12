@@ -6,8 +6,10 @@
 package com.enatbanksc.ATMReconciliation.etswitch.transaction;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,8 +75,15 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
 //            Link link=ControllerLinkBuilder.linkTo(ETSTransactionResource.class).slash(transaction.getCardNumber()).withSelfRel();
 //            transaction.add(link);
 //        });
-            
+
         return service.getAll();
+    }
+
+    @GetMapping("/etst-between-dates")
+    public @ResponseBody
+    List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate, String terminalId) {
+        System.out.println(fromDate+"\t"+toDate);
+        return service.getTransactionsBetween(fromDate, toDate, "EA011001");
     }
 
 }

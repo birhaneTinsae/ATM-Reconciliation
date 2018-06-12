@@ -23,5 +23,6 @@ public interface ETSTransactionRepository extends JpaRepository<ETSTransaction, 
      * @param to
      * @return
      */
-    List<ETSTransaction> findByTransactionDateBetween(Date from, Date to);
+    List<ETSTransaction> findByTransactionDateBetweenAndTerminalId(Date from, Date to,String branch);
+    
 }
