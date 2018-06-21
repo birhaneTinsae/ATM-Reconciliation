@@ -58,7 +58,7 @@ public class BranchService implements Common<Branch> {
     @Override
     public boolean delete(int id) {
         repository.deleteById(id);
-        return repository.findById(id) != null;
+        return repository.existsById(id);
     }
 
     /**
