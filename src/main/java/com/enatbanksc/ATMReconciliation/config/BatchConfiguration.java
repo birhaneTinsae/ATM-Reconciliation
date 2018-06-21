@@ -5,7 +5,6 @@
  */
 package com.enatbanksc.ATMReconciliation.config;
 
-import com.enatbanksc.ATMReconciliation.batch.ETSTransactionItemProcessor;
 import com.enatbanksc.ATMReconciliation.batch.JobCompletionNotificationListener;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
+import javax.annotation.PreDestroy;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -22,22 +21,20 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
+
 import org.springframework.batch.item.file.MultiResourceItemReader;
 
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -91,11 +88,12 @@ public class BatchConfiguration {
     public FlatFileItemReader<ETSTransaction> reader() {
         FlatFileItemReader<ETSTransaction> reader = new FlatFileItemReader<>();
         reader.setLinesToSkip(1);
+        reader.setStrict(false);
         reader.setLineMapper(new DefaultLineMapper<ETSTransaction>() {
             {
                 setLineTokenizer(new DelimitedLineTokenizer() {
                     {
-                        setNames(new String[]{"issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno"});//, "feeAmountOne", "feeAmountTwo"
+                        setNames(new String[]{"issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno", "feeAmountOne", "feeAmountTwo"});//, "feeAmountOne", "feeAmountTwo"
                     }
                 });
                 setFieldSetMapper(new BeanWrapperFieldSetMapper<ETSTransaction>() {
@@ -118,42 +116,42 @@ public class BatchConfiguration {
         return multiResourceItemReader;
     }
 
-    @Bean
-    public ETSTransactionItemProcessor processor() {
-        return new ETSTransactionItemProcessor();
-    }
-
-    @Bean
-    public JdbcBatchItemWriter<ETSTransaction> writer(DataSource dataSource) {
-        return new JdbcBatchItemWriterBuilder<ETSTransaction>()
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO ets_transactions (  issuer,  acquirer,  MTI,  cardNumber,  amount,  currency,  transactionDate,  transactionDesc,  terminalId,  transactionPlace,  stan,  refnumF37,  authIdRespF38,  FeUtrnno,  BoUtrnno) VALUES (:issuer,  :acquirer,  :MTI,  :cardNumber,  :amount,  :currency,  :transactionDate,  :transactionDesc,  :terminalId,  :transactionPlace,  :stan,  :refnumF37,  :authIdRespF38,  :FeUtrnno,  :BoUtrnno)")
-                .dataSource(dataSource)
-                .build();
-    }
+//    @Bean
+//    public ETSTransactionItemProcessor processor() {
+//        return new ETSTransactionItemProcessor();
+//    }
+//    @Bean
+//    public JdbcBatchItemWriter<ETSTransaction> writer(DataSource dataSource) {
+//        return new JdbcBatchItemWriterBuilder<ETSTransaction>()
+//                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+//                .sql("INSERT INTO ets_transactions (  issuer,  acquirer,  MTI,  cardNumber,  amount,  currency,  transactionDate,  transactionDesc,  terminalId,  transactionPlace,  stan,  refnumF37,  authIdRespF38,  FeUtrnno,  BoUtrnno) VALUES (:issuer,  :acquirer,  :MTI,  :cardNumber,  :amount,  :currency,  :transactionDate,  :transactionDesc,  :terminalId,  :transactionPlace,  :stan,  :refnumF37,  :authIdRespF38,  :FeUtrnno,  :BoUtrnno)")
+//                .dataSource(dataSource)
+//                .build();
+//    }
     // end::readerwriterprocessor[]
-
     // tag::jobstep[]
     @Bean
-    public Job importETSTransactionsJob(JobCompletionNotificationListener listener, Step step1) {
+    public Job importETSTransactionsJob(JobCompletionNotificationListener listener, Step loadCSV) {
         return jobBuilderFactory.get("importETSTransactionsJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(step1)
-                .end()
+                // .flow(step1)
+                // .end()
+                .start(loadCSV)
                 .build();
     }
 
     @Bean
-    public Step step1(JdbcBatchItemWriter<ETSTransaction> writer/*, Resource in*/) {
-        return stepBuilderFactory.get("step1")
+    public Step loadETSTCSV(ItemWriter<ETSTransaction> itemWriter, ItemProcessor<ETSTransaction, ETSTransaction> itemProcessor/*JdbcBatchItemWriter<ETSTransaction> writer, Resource in*/) {
+        return stepBuilderFactory.get("load-ests-csv")
                 .<ETSTransaction, ETSTransaction>chunk(100)
                 .reader(mutiResourceItemReader())
-                .processor(processor())
-                .writer(writer)
+                .processor(itemProcessor/*processor()*/)
+                .writer(itemWriter)
                 .build();
     }
 
+    @Bean
     public Resource[] loadResources() {
         try {
             return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:C:/Users/btinsae/Downloads/OCTOBER/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
@@ -161,5 +159,12 @@ public class BatchConfiguration {
             Logger.getLogger(BatchConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        if (reader() != null) {
+            reader().close();
+        }
     }
 }

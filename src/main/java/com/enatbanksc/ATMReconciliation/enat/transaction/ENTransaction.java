@@ -6,7 +6,6 @@
 package com.enatbanksc.ATMReconciliation.enat.transaction;
 
 import java.io.Serializable;
-import java.util.Currency;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,20 +14,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import lombok.Getter;
-import lombok.Setter;
+
 
 /**
  *
  * @author btinsae
  */
 @Entity
-@Getter
-@Setter
 @Table(name = "atm_test",schema = "ebfcprod")
 public class ENTransaction implements Serializable, Comparable<ENTransaction> {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "AC_ENTRY_SR_NO")
     private int id;
@@ -47,5 +47,54 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     public int compareTo(ENTransaction o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getStan() {
+		return stan;
+	}
+
+	public void setStan(int stan) {
+		this.stan = stan;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public float getAmount() {
+		return amount;
+	}
+
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	public String getTransactionCode() {
+		return transactionCode;
+	}
+
+	public void setTransactionCode(String transactionCode) {
+		this.transactionCode = transactionCode;
+	}
+    
 
 }

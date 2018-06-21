@@ -8,6 +8,11 @@ package com.enatbanksc.ATMReconciliation.storage;
 public class StorageFileNotFoundException extends StorageException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Custom file not found exception with error message constructor
      *
      * @param message

@@ -10,7 +10,6 @@ import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
 import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransactionService;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionService;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,6 +9,11 @@ package com.enatbanksc.ATMReconciliation.storage;
 public class StorageException extends RuntimeException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Constructor with error message
      *
      * @param message

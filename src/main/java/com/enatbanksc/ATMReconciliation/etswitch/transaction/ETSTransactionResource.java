@@ -10,10 +10,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,8 +79,14 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
     @GetMapping("/etst-between-dates")
     public @ResponseBody
     List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate, String terminalId) {
-        System.out.println(fromDate+"\t"+toDate);
+        System.out.println(fromDate + "\t" + toDate);
         return service.getTransactionsBetween(fromDate, toDate, "EA011001");
+    }
+
+    @GetMapping("/load-transactions-date")
+    public @ResponseBody
+    List<Date> getLoadedETSTransactionDate() {
+        return service.loadedTransactionsDate();
     }
 
 }
