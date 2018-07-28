@@ -1,6 +1,7 @@
 package com.enatbanksc.ATMReconciliation.storage;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -13,7 +14,7 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "upload-dir";
+    private String location = "C:/Users/btinsae/Documents/EJS/";//"upload-dir";
 
     /**
      * to get file storage directory

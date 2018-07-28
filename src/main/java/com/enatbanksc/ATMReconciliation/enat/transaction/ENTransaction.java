@@ -21,7 +21,7 @@ import javax.persistence.Temporal;
  * @author btinsae
  */
 @Entity
-@Table(name = "atm_test",schema = "ebfcprod")
+@Table(name = "EBVW_ATM_RECON",schema = "ebfcprod")
 public class ENTransaction implements Serializable, Comparable<ENTransaction> {
 
     /**
@@ -95,6 +95,11 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
 	public void setTransactionCode(String transactionCode) {
 		this.transactionCode = transactionCode;
 	}
+
+    @Override
+    public String toString() {
+        return "ENTransaction{" + "id=" + id + ", stan=" + stan + ", branch=" + branch + ", amount=" + amount + ", transactionDate=" + transactionDate + ", transactionCode=" + transactionCode + '}';
+    }
     
 
 }

@@ -35,28 +35,36 @@ public class ReconciliationService {
      * @param etsts list of ETSwitch transaction within the given dates.
      * @return list of missing transactions from ETS
      */
-    private List<ENTransaction> getTransactionsMissingFromETSNotPaid(List<ENTransaction> enatTransactions, List<ETSTransaction> etsts) {
+    private List<ENTransaction> getTransactionsMissingFromETSNotPaid(List<ENTransaction> enatTransactions,
+            List<ETSTransaction> etsts) {
         if (enatTransactions == null || enatTransactions.isEmpty()) {
             return null;
         }
 
         return enatTransactions.stream()
-                .filter(entTransaction -> (!SearchTransaction.searchETSTransaction(etsts, entTransaction.getStan())))
+                .filter(entTransaction
+                        -> (!SearchTransaction.searchETSTransaction(etsts,
+                        entTransaction.getStan())))
                 .filter(entTransaction -> !isPaid(entTransaction))
                 .collect(Collectors.toList());
 
     }
-    private List<ENTransaction> getTransactionsMissingFromETSPaid(List<ENTransaction> enatTransactions, List<ETSTransaction> etsts) {
+
+    private List<ENTransaction> getTransactionsMissingFromETSPaid(List<ENTransaction> enatTransactions,
+            List<ETSTransaction> etsts) {
         if (enatTransactions == null || enatTransactions.isEmpty()) {
             return null;
         }
 
         return enatTransactions.stream()
-                .filter(entTransaction -> (!SearchTransaction.searchETSTransaction(etsts, entTransaction.getStan())))
+                .filter(entTransaction
+                        -> (!SearchTransaction.searchETSTransaction(etsts,
+                        entTransaction.getStan())))
                 .filter(entTransaction -> isPaid(entTransaction))
                 .collect(Collectors.toList());
 
     }
+
     /**
      * Search transactions that exist in Switch vendor but missed from CBS.
      *
@@ -65,15 +73,17 @@ public class ReconciliationService {
      * @param etsts list of ETSwitch transaction within the given dates.
      * @return list of missing transactions from ENAT CBS.
      */
-    private List<ETSTransaction> getTransactionsMissingFromENT(List<ENTransaction> eNTransactions, List<ETSTransaction> etsts) {
+    private List<ETSTransaction> getTransactionsMissingFromENT(List<ENTransaction> eNTransactions,
+            List<ETSTransaction> etsts) {
 
         if (eNTransactions == null || eNTransactions.isEmpty()) {
             return null;
         }
 
         return etsts.stream()
-                .filter(etsTransaction -> (!SearchTransaction.searchENTransaction(eNTransactions, etsTransaction.getStan())))
-               // .filter(etsTransaction -> isPaid(etsTransaction))
+                .filter(etsTransaction
+                        -> (!SearchTransaction.searchENTransaction(eNTransactions,
+                        etsTransaction.getStan())))
                 .collect(Collectors.toList());
 
     }
@@ -89,15 +99,19 @@ public class ReconciliationService {
         if (transaction instanceof ENTransaction) {
             ENTransaction eNTransaction = (ENTransaction) transaction;
             Branch branch = branchService.getBranchByCode(eNTransaction.getBranch());
-            return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(), String.valueOf(eNTransaction.getStan()), eNTransaction.getTransactionDate());
+            return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
+                    String.valueOf(eNTransaction.getStan()),
+                    eNTransaction.getTransactionDate());
         } else {
 
             ETSTransaction estTransaction = (ETSTransaction) transaction;
             Branch branch = branchService.getBranchByTerminalId(estTransaction.getTerminalId());
-            return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(), String.valueOf(estTransaction.getStan()), estTransaction.getTransactionDate());
+            return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
+                    String.valueOf(estTransaction.getStan()),
+                    estTransaction.getTransactionDate());
 
         }
-     
+
     }
 
     /**
@@ -111,7 +125,8 @@ public class ReconciliationService {
      * @return List of ENTransaction that are not paid and not recognized by
      * Switch vendor(ETSWITCH).
      */
-    public List<ENTransaction> getReversals(List<ENTransaction> enTransactions, List<ETSTransaction> etsts) {
+    public List<ENTransaction> getReversals(List<ENTransaction> enTransactions,
+            List<ETSTransaction> etsts) {
 
         return getTransactionsMissingFromETSNotPaid(enTransactions, etsts);
     }
@@ -141,7 +156,8 @@ public class ReconciliationService {
      * @param etsts list of ETSwitch transaction within the given dates.
      * @return List ETSTransaction.
      */
-    public List<ETSTransaction> getPosts(List<ENTransaction> transactions, List<ETSTransaction> etsts) {
+    public List<ETSTransaction> getPosts(List<ENTransaction> transactions,
+            List<ETSTransaction> etsts) {
 
         return getTransactionsMissingFromENT(transactions, etsts);
     }

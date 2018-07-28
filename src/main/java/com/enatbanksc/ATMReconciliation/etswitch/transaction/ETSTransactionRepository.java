@@ -28,5 +28,6 @@ public interface ETSTransactionRepository extends JpaRepository<ETSTransaction, 
     List<ETSTransaction> findByTransactionDateBetweenAndTerminalId(Date from, Date to,String branch);
     @Query("SELECT DATE(transactionDate) AS dateonly FROM ets_transactions GROUP BY date(transactionDate)")
     List<Date> loadedTransactionsByDate();
+    List<ETSTransaction>findByTransactionDateBetween(Date from,Date to);
     
 }

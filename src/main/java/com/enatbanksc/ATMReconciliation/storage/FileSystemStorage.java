@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,14 +26,18 @@ import org.springframework.web.multipart.MultipartFile;
  * @author btinsae
  * @version 1.0
  */
+@Service
 public class FileSystemStorage implements StorageService {
 
-    @Autowired
-    StorageProperties properties;
     private final Path rootLocation;
 
-    public FileSystemStorage(Path rootLocation) {
-        this.rootLocation = Paths.get(properties.getLocation());
+//    @Autowired
+//    public FileSystemStorage(StorageProperties properties/*Path rootLocation*/) {
+//        this.rootLocation = Paths.get(properties.getLocation());
+//    }
+
+    public FileSystemStorage() {
+        this.rootLocation = Paths.get( "C:\\Users\\btinsae\\Documents\\EJS\\");
     }
 
     /**
@@ -90,6 +95,7 @@ public class FileSystemStorage implements StorageService {
     @Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
+
     }
 
     /**
@@ -101,6 +107,7 @@ public class FileSystemStorage implements StorageService {
     @Override
     public Resource loadAsResource(String filename) {
         try {
+
             Path file = load(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {

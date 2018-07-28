@@ -2,13 +2,16 @@ package com.enatbanksc.ATMReconciliation;
 
 
 
+import com.enatbanksc.ATMReconciliation.storage.StorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableConfigurationProperties(StorageProperties.class)
 public class AtmReconciliationApplication {
 
     public static void main(String[] args) {

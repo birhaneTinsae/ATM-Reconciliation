@@ -59,7 +59,7 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     @Override
     public boolean delete(int id) {
         repository.deleteById(id);
-        return repository.existsById(id);
+        return !repository.existsById(id);
     }
 
     /**
@@ -75,12 +75,15 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      *
      * @param from
      * @param to
+     * @param terminalId
      * @return
      */
     public List<ETSTransaction> getTransactionsBetween(Date from, Date to, String terminalId) {
         return repository.findByTransactionDateBetweenAndTerminalId(from, to, terminalId);
     }
-
+  public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
+        return repository.findByTransactionDateBetween(from, to);
+    }
     public List<Date> loadedTransactionsDate() {
         return repository.loadedTransactionsByDate();
 
