@@ -88,11 +88,11 @@ public class EJUtil {
                          */
                         if (line.contains(TRANSACTION_START_TAG)) {
                             while (!(temp = reader.readLine()).contains(TRANSACTION_END_TAG) && input.hasNext()) {
-input.nextLine();
+                                input.nextLine();
                                 builder.append(temp);
                             }
                             builderString = builder.toString();
-                         
+
                             if (builderString.contains(stan) && builderString.contains(NOTES_TAKEN)) {
                                 System.out.println("STAN " + stan);
                                 return true;

@@ -35,6 +35,7 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             LOG.info("!!! JOB FINISHED! Time to verify the results");
+            
             service.getAll().forEach(transaction -> LOG.info("Found <" + transaction + "> in the database."));
 //
 //            jdbcTemplate.query("SELECT * FROM ets_transactions",
