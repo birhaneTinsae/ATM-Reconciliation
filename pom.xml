@@ -107,8 +107,12 @@
     </dependencies>
 
     <build>
-        <plugins>
+        <finalName>enat-atm-reconciliation</finalName>
+        <plugins>            
             <plugin>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>

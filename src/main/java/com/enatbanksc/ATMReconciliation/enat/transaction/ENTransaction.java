@@ -29,7 +29,7 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "AC_ENTRY_SR_NO")
     private int id;
     private int stan;

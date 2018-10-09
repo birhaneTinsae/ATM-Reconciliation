@@ -68,6 +68,23 @@ public class ReconciliationResource {
 
     }
 
+    @GetMapping("/atm-transactions/{branchId}")
+    public @ResponseBody
+    List<ENTransaction> getAtmTransactions(
+            @RequestParam("from_date")
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @RequestParam("to_date")
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+            @PathVariable String branchId) {
+
+        return service.getATMTransactions(
+                eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
+               // eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
+       eTSTransactionService.getTransactionsBetween(fromDate, toDate)
+                );
+
+    }
+
     @GetMapping("/claims/{branchId}")
     public @ResponseBody
     List<ENTransaction> getClaims(

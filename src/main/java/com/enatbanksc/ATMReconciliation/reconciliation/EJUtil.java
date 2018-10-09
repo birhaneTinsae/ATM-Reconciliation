@@ -7,19 +7,16 @@ package com.enatbanksc.ATMReconciliation.reconciliation;
 
 import com.enatbanksc.ATMReconciliation.storage.FileSystemStorage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -37,7 +34,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EJUtil {
 
-    private static final String EJ_URI = "C:\\Users\\btinsae\\Documents\\EJS\\";
+  // private static final String EJ_URI = "C:\\Users\\btinsae\\Documents\\EJS\\";
+    private static final String EJ_URI = "D:\\EJ_BKP\\";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TRANSACTION_START_TAG = "*TRANSACTION START*";
     private static final String TRANSACTION_END_TAG = "TRANSACTION END";
@@ -59,6 +57,7 @@ public class EJUtil {
         String builderString = null;
         String temp = null;
         String line = null;
+       // System.out.println(transactionDate.toString());
         System.out.println(branchEjDir.concat(branchEjUri.replace("*", transactionDate.toString())));
         Resource ej = null;
 
@@ -89,6 +88,7 @@ public class EJUtil {
                         if (line.contains(TRANSACTION_START_TAG)) {
                             while (!(temp = reader.readLine()).contains(TRANSACTION_END_TAG) && input.hasNext()) {
                                 input.nextLine();
+                               // System.out.println(temp);
                                 builder.append(temp);
                             }
                             builderString = builder.toString();
@@ -105,6 +105,7 @@ public class EJUtil {
                     }
                     return false;
                 } catch (IOException ex) {
+                    System.out.println(stan+"\t"+transactionDate);
                     System.out.println(ex);
                 }
             }

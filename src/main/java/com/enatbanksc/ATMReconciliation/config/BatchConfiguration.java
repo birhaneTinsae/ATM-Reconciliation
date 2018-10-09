@@ -155,6 +155,8 @@ public class BatchConfiguration {
     @Bean
     public Resource[] loadResources() {
         try {
+       //return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:D:/EtSwitch/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
+
             return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:C:/Users/btinsae/Downloads/OCTOBER/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
         } catch (IOException ex) {
             Logger.getLogger(BatchConfiguration.class.getName()).log(Level.SEVERE, null, ex);
