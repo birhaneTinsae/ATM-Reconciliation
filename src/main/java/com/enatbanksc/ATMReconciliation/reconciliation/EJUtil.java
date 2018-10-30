@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 public class EJUtil {
 
   // private static final String EJ_URI = "C:\\Users\\btinsae\\Documents\\EJS\\";
-    private static final String EJ_URI = "D:\\EJ_BKP\\";
+    private static final String EJ_URI = "E:\\EJ_BKP\\";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TRANSACTION_START_TAG = "*TRANSACTION START*";
     private static final String TRANSACTION_END_TAG = "TRANSACTION END";

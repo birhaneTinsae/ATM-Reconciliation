@@ -10,6 +10,7 @@ import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
 import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransactionService;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionService;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,11 @@ public class ReconciliationResource {
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
             @PathVariable String branchId) {
 
+        Date newToDate = incrementDateByOne(toDate);
+
         return service.getReversals(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                eTSTransactionService.getTransactionsBetween(fromDate, toDate));
+                eTSTransactionService.getTransactionsBetween(fromDate, newToDate));
     }
 
     @GetMapping("/posts/{branchId}")
@@ -79,9 +82,9 @@ public class ReconciliationResource {
 
         return service.getATMTransactions(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-               // eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
-       eTSTransactionService.getTransactionsBetween(fromDate, toDate)
-                );
+                // eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
+                eTSTransactionService.getTransactionsBetween(fromDate, toDate)
+        );
 
     }
 
@@ -93,9 +96,17 @@ public class ReconciliationResource {
             @RequestParam("to_date")
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
             @PathVariable String branchId) {
+
+        Date newToDate = incrementDateByOne(toDate);
         return service.getClaims(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId()));
+                eTSTransactionService.getTransactionsBetween(fromDate, newToDate, branchService.show(Integer.parseInt(branchId)).getTerminalId()));
     }
 
+    private Date incrementDateByOne(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
 }

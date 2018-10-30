@@ -82,7 +82,8 @@ public class ETSTransactionService implements Common<ETSTransaction> {
         return repository.findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(from, to, terminalId);
     }
   public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
-        return repository.findByTransactionDateBetweenOrderByTransactionDate(from, to);
+        //return repository.findByTransactionDateBetweenOrderByTransactionDate(from, to);
+        return repository.findByTransactionDateGreaterThanOrEqualAndTransactionDateLessThanOrderByTransactionDate(from, to);
     }
     public List<Date> loadedTransactionsDate() {
         return repository.loadedTransactionsDate();

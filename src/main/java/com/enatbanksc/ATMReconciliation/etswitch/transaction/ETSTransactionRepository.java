@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -29,5 +30,8 @@ public interface ETSTransactionRepository extends JpaRepository<ETSTransaction, 
     @Query(value="SELECT DATE(transactionDate) AS dateonly FROM ets_transactions GROUP BY date(transactionDate) ORDER BY transactionDate DESC LIMIT 6",nativeQuery = true)
     List<Date> loadedTransactionsDate();
     List<ETSTransaction>findByTransactionDateBetweenOrderByTransactionDate(Date from,Date to);
+    @Query(value="SELECT * FROM ets_transactions WHERE transactionDate>=:from and transactionDate<:to ORDER BY transactionDate",nativeQuery = true)    
+    List<ETSTransaction>findByTransactionDateGreaterThanOrEqualAndTransactionDateLessThanOrderByTransactionDate(@Param("from") Date from,@Param("to") Date to);
+
     
 }
