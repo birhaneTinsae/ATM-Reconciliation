@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>ATM</title>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+            <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    </head>
+    <body>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Well done!</h4>
+            <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+            <hr>
+                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+        </div>
+        <div class="row">
+            <div class="col-auto offset-4">
+                <div class="card" style="width: 25rem;margin-top: 100px;">
+                    <div class="card-body">
+                        <h5 class="card-title">ATM reconciliation</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Import CSV</h6>
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Date</label>
+                                <input type="date" class="form-control" id="import-date" aria-describedby="import date" placeholder="Import Date">
+                                    <small id="emailHelp" class="form-text text-muted">Today's date</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">EtSwitch csv</label>
+                                <input type="file" class="form-control" id="exampleInputPassword1" placeholder="etswitch excel">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                    </div>
+                </div> 
+            </div>
+
+        </div>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+    </body>
+</html>
