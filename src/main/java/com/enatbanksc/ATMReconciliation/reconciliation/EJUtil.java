@@ -5,7 +5,8 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-import com.enatbanksc.ATMReconciliation.storage.FileSystemStorage;
+
+import com.enatbanksc.ATMReconciliation.storage.FileSystemStorageService;
 import java.io.BufferedReader;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class EJUtil {
     static ResourceLoader loader;
 
     @Autowired
-    static FileSystemStorage fileSystemStorage;
+    static FileSystemStorageService fileSystemStorage;
 //    
 
     public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, Date transactionDate) {

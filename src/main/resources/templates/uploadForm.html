@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<!--To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.-->
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>ATM </title>
+        <meta charset="UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></neta>
+            <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Enat ATM RS</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-auto offset-4">
+                <div th:if="${message}">
+                    <h2 th:text="${message}"/>
+                </div>
+                <div class="card" style="width: 25rem;margin-top: 100px;">
+                    <div class="card-body">
+                        <h5 class="card-title">ATM reconciliation</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Import CSV</h6>
+                        <form method="POST" enctype="multipart/form-data" action="/">
+                            <div class="form-group">
+                                <label for="importDate">Date</label>
+                                <input type="date" class="form-control" id="importDate" name="fileDate" aria-describedby="import date" placeholder="Import Date"/>
+                                    <small id="importDate" class="form-text text-muted">Today's date</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="etswitchFile">EtSwitch csv</label>
+                                <input type="file" class="form-control" id="file" name="file" placeholder="etswitch excel"/>
+                            </div>
+
+                            <input type="submit" class="btn btn-primary" value="Upload"/>
+                        </form>
+
+                    </div>
+                </div> 
+            </div>
+            <div class="col-2 float-right" style="margin-top: 100px;">
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="file : ${files}">
+                        <a th:href="${file}" th:text="${file}" />
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+    </body>
+</html>
+<!--<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<div th:if="${message}">
+		<h2 th:text="${message}"/>
+	</div>
+
+	<div>
+		<form method="POST" enctype="multipart/form-data" action="/" >
+			<table>
+				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+			</table>
+		</form>
+	</div>
+
+	<div>
+		<ul>
+			<li th:each="file : ${files}">
+				<a th:href="${file}" th:text="${file}" />
+			</li>
+		</ul>
+	</div>
+
+</body>
+</html>-->
