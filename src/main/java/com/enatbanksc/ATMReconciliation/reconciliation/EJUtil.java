@@ -5,7 +5,6 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-
 import com.enatbanksc.ATMReconciliation.storage.FileSystemStorageService;
 import java.io.BufferedReader;
 
@@ -17,6 +16,7 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EJUtil {
 
-  // private static final String EJ_URI = "C:\\Users\\btinsae\\Documents\\EJS\\";
+    // private static final String EJ_URI = "C:\\Users\\btinsae\\Documents\\EJS\\";
     private static final String EJ_URI = "E:\\EJ_BKP\\";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TRANSACTION_START_TAG = "*TRANSACTION START*";
@@ -58,7 +58,7 @@ public class EJUtil {
         String builderString = null;
         String temp = null;
         String line = null;
-       // System.out.println(transactionDate.toString());
+        // System.out.println(transactionDate.toString());
         System.out.println(branchEjDir.concat(branchEjUri.replace("*", transactionDate.toString())));
         Resource ej = null;
 
@@ -89,7 +89,7 @@ public class EJUtil {
                         if (line.contains(TRANSACTION_START_TAG)) {
                             while (!(temp = reader.readLine()).contains(TRANSACTION_END_TAG) && input.hasNext()) {
                                 input.nextLine();
-                               // System.out.println(temp);
+                                // System.out.println(temp);
                                 builder.append(temp);
                             }
                             builderString = builder.toString();
@@ -106,7 +106,7 @@ public class EJUtil {
                     }
                     return false;
                 } catch (IOException ex) {
-                    System.out.println(stan+"\t"+transactionDate);
+                    System.out.println(stan + "\t" + transactionDate);
                     System.out.println(ex);
                 }
             }
@@ -145,13 +145,16 @@ public class EJUtil {
     }
 
     private static Date incrementDate(Date date) {
-
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        return cal.getTime();
+        // LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
 //        LocalDate localDate =date.toInstant()
 //            .atZone(ZoneId.systemDefault())
 //            .toLocalDate();
 
-        return java.sql.Date.valueOf(localDate.plusDays(1));
+        // return java.sql.Date.valueOf(localDate.plusDays(1));
         //return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 

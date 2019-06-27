@@ -78,7 +78,7 @@ public class ReconciliationService {
             List<ENTransaction> enatTransactions,
             List<ETSTransaction> etsts) {
         if ((enatTransactions == null || enatTransactions.isEmpty())
-                && (etsts.isEmpty() || etsts == null)) {
+                && (etsts.isEmpty() )) {
             return null;
         }
 

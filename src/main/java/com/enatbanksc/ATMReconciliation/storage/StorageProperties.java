@@ -14,7 +14,7 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "C:\\Users\\btinsae\\Downloads\\OCTOBER\\xls\\";//"upload-dir";
+    private String location = "upload-dir";//"C:\\Users\\btinsae\\Downloads\\OCTOBER\\xls\\";
 
     /**
      * to get file storage directory
