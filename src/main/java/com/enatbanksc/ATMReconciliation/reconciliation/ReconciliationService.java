@@ -66,6 +66,31 @@ public class ReconciliationService {
     }
 
     /**
+     * *
+     * Search for successful transaction. Transactions that exist in CBS and
+     * EtSwitch.
+     *
+     * @param enatTransactions
+     * @param etsts
+     * @return
+     */
+    private List<ENTransaction> getSuccessfulATMTransactions(
+            List<ENTransaction> enatTransactions,
+            List<ETSTransaction> etsts) {
+        if ((enatTransactions == null || enatTransactions.isEmpty())
+                && (etsts.isEmpty() )) {
+            return null;
+        }
+
+        return enatTransactions.stream()
+                .filter(entTransaction
+                        -> (SearchTransaction.searchETSTransaction(etsts,
+                        entTransaction.getStan())))
+                .collect(Collectors.toList());
+
+    }
+
+    /**
      * Search transactions that exist in Switch vendor but missed from CBS.
      *
      * @param eNTransactions list of ENAT CBS transactions within the given
@@ -160,5 +185,11 @@ public class ReconciliationService {
             List<ETSTransaction> etsts) {
 
         return getTransactionsMissingFromENT(transactions, etsts);
+    }
+
+    public List<ENTransaction> getATMTransactions(List<ENTransaction> transactions,
+            List<ETSTransaction> etsts) {
+
+        return getSuccessfulATMTransactions(transactions, etsts);
     }
 }

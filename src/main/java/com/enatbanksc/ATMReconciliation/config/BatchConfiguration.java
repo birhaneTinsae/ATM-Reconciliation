@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PreDestroy;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -39,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+
 
 /**
  *
@@ -154,6 +154,8 @@ public class BatchConfiguration {
     @Bean
     public Resource[] loadResources() {
         try {
+            //return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:D:/EtSwitch/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
+
             return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:C:/Users/btinsae/Downloads/OCTOBER/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
         } catch (IOException ex) {
             Logger.getLogger(BatchConfiguration.class.getName()).log(Level.SEVERE, null, ex);
@@ -167,4 +169,6 @@ public class BatchConfiguration {
             reader().close();
         }
     }
+
+    
 }
