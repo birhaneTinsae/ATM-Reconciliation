@@ -14,7 +14,7 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "C:/Users/btinsae/Documents/EJS/";//"upload-dir";
+    private String location = "upload-dir";//"C:\\Users\\btinsae\\Downloads\\OCTOBER\\xls\\";
 
     /**
      * to get file storage directory
@@ -29,6 +29,7 @@ public class StorageProperties {
      * to set file storage directory
      *
      * @param location
+     *
      */
     public void setLocation(String location) {
         this.location = location;

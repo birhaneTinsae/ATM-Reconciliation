@@ -87,7 +87,7 @@ public class MysqlConfig {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(mysqlDataSource());
         em.setPersistenceUnitName("MYSQL");
-        em.setPackagesToScan("com.enatbanksc.ATMReconciliation.etswitch", "com.enatbanksc.ATMReconciliation.branch");
+        em.setPackagesToScan("com.enatbanksc.ATMReconciliation.etswitch","com.enatbanksc.ATMReconciliation.user" ,"com.enatbanksc.ATMReconciliation.branch");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();

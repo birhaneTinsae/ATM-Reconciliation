@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>ATM-Reconciliation</name>
-    <description>ATM transaction reconciliation </description>
+    <description>ATM transaction reconciliation</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -35,22 +35,22 @@
         </dependency>
 
         <dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.4.9</version>
-		</dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.9</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>            
+            <artifactId>spring-hateoas</artifactId>
         </dependency>
-        <!--        <dependency>
+         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -63,6 +63,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -95,22 +101,22 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        <dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 
         <dependency>
-        	<groupId>org.springframework.boot</groupId>
-        	<artifactId>spring-boot-configuration-processor</artifactId>
-        	<optional>true</optional>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>enat-atm-reconciliation</finalName>
-        <plugins>            
+        <plugins>
             <plugin>
                 <configuration>
                     <executable>true</executable>
