@@ -5,11 +5,14 @@
  */
 package com.enatbanksc.ATMReconciliation.branch;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 
 /**
@@ -17,8 +20,8 @@ import javax.persistence.Id;
  * @author btinsae
  */
 @Entity
-//@Getter
-//@Setter
+@Data
+@NoArgsConstructor
 public class Branch implements Serializable {
     /**
 	 * 
@@ -32,41 +35,5 @@ public class Branch implements Serializable {
     private String ejUri;
     private String ejDirectory;
     private String terminalId;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getEjUri() {
-		return ejUri;
-	}
-	public void setEjUri(String ejUri) {
-		this.ejUri = ejUri;
-	}
-	public String getEjDirectory() {
-		return ejDirectory;
-	}
-	public void setEjDirectory(String ejDirectory) {
-		this.ejDirectory = ejDirectory;
-	}
-	public String getTerminalId() {
-		return terminalId;
-	}
-	public void setTerminalId(String terminalId) {
-		this.terminalId = terminalId;
-	}
-    
+
 }

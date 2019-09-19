@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
@@ -23,10 +25,11 @@ import lombok.NoArgsConstructor;
  */
 @Entity(name = "ets_transactions")
 @NoArgsConstructor
+@Data
 public class ETSTransaction  implements Serializable, Comparable<ETSTransaction> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -87,161 +90,8 @@ public class ETSTransaction  implements Serializable, Comparable<ETSTransaction>
 
 	@Override
 	public int compareTo(ETSTransaction o) {
-		return this.getStan() > o.getStan() ? -1 : (this.getStan() < o.getStan()) ? 1 : 0;
+		return Integer.compare(o.getStan(), this.getStan());
 	}
 
-	@Override
-	public String toString() {
-		return "ETSTransaction{" + "id=" + id + ", issuer=" + issuer + ", acquirer=" + acquirer + ", MTI=" + MTI
-				+ ", cardNumber=" + cardNumber + ", amount=" + amount + ", currency=" + currency + ", transactionDate="
-				+ transactionDate + ", transactionDesc=" + transactionDesc + ", terminalId=" + terminalId
-				+ ", transactionPlace=" + transactionPlace + ", stan=" + stan + ", refnumF37=" + refnumF37
-				+ ", authIdRespF38=" + authIdRespF38 + ", FeUtrnno=" + FeUtrnno + ", BoUtrnno="
-				+ BoUtrnno /* + ", feeAmountOne=" + feeAmountOne + ", feeAmountTwo=" + feeAmountTwo */ + '}';
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getIssuer() {
-		return issuer;
-	}
-
-	public void setIssuer(String issuer) {
-		this.issuer = issuer;
-	}
-
-	public String getAcquirer() {
-		return acquirer;
-	}
-
-	public void setAcquirer(String acquirer) {
-		this.acquirer = acquirer;
-	}
-
-	public int getMTI() {
-		return MTI;
-	}
-
-	public void setMTI(int mTI) {
-		MTI = mTI;
-	}
-
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-	public float getAmount() {
-		return amount;
-	}
-
-	public void setAmount(float amount) {
-		this.amount = amount;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-
-	public Date getTransactionDate() {
-		return transactionDate;
-	}
-
-	public void setTransactionDate(Date transactionDate) {
-		this.transactionDate = transactionDate;
-	}
-
-	public String getTransactionDesc() {
-		return transactionDesc;
-	}
-
-	public void setTransactionDesc(String transactionDesc) {
-		this.transactionDesc = transactionDesc;
-	}
-
-	public String getTerminalId() {
-		return terminalId;
-	}
-
-	public void setTerminalId(String terminalId) {
-		this.terminalId = terminalId;
-	}
-
-	public String getTransactionPlace() {
-		return transactionPlace;
-	}
-
-	public void setTransactionPlace(String transactionPlace) {
-		this.transactionPlace = transactionPlace;
-	}
-
-	public int getStan() {
-		return stan;
-	}
-
-	public void setStan(int stan) {
-		this.stan = stan;
-	}
-
-	public String getRefnumF37() {
-		return refnumF37;
-	}
-
-	public void setRefnumF37(String refnumF37) {
-		this.refnumF37 = refnumF37;
-	}
-
-	public String getAuthIdRespF38() {
-		return authIdRespF38;
-	}
-
-	public void setAuthIdRespF38(String authIdRespF38) {
-		this.authIdRespF38 = authIdRespF38;
-	}
-
-	public String getFeUtrnno() {
-		return FeUtrnno;
-	}
-
-	public void setFeUtrnno(String feUtrnno) {
-		FeUtrnno = feUtrnno;
-	}
-
-	public String getBoUtrnno() {
-		return BoUtrnno;
-	}
-
-	public void setBoUtrnno(String boUtrnno) {
-		BoUtrnno = boUtrnno;
-	}
-
-	public float getFeeAmountOne() {
-		return feeAmountOne;
-	}
-
-	public void setFeeAmountOne(float feeAmountOne) {
-		this.feeAmountOne = feeAmountOne;
-	}
-
-	public float getFeeAmountTwo() {
-		return feeAmountTwo;
-	}
-
-	public void setFeeAmountTwo(float feeAmountTwo) {
-		this.feeAmountTwo = feeAmountTwo;
-	}
 
 }

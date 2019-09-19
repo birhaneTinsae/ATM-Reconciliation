@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ENTransactionRepository extends JpaRepository<ENTransaction, Integer> {
 
-    public List<ENTransaction> findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(Date fromDate,Date toDate,String branch);
-    public List<ENTransaction> findByTransactionDateBetweenAndBranchOrderById(Date fromDate, Date toDate,String branch);
+    List<ENTransaction> findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(Date fromDate, Date toDate, String branch);
+    List<ENTransaction> findByTransactionDateBetweenAndBranchOrderById(Date fromDate, Date toDate, String branch);
 }
