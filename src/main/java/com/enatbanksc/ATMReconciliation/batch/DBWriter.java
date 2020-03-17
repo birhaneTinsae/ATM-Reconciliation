@@ -5,8 +5,8 @@
  */
 package com.enatbanksc.ATMReconciliation.batch;
 
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionRepository;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionRepository;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class DBWriter implements ItemWriter<ETSTransaction> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DBWriter.class);
     @Autowired
-    ETSTransactionRepository repository;
+    private ETSTransactionRepository repository;
 
     /**
      *

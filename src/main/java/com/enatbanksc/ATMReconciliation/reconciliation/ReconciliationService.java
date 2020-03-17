@@ -7,8 +7,8 @@ package com.enatbanksc.ATMReconciliation.reconciliation;
 
 import com.enatbanksc.ATMReconciliation.branch.Branch;
 import com.enatbanksc.ATMReconciliation.branch.BranchService;
-import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.utils.SearchTransaction;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,6 +77,7 @@ public class ReconciliationService {
     private List<ENTransaction> getSuccessfulATMTransactions(
             List<ENTransaction> enatTransactions,
             List<ETSTransaction> etsts) {
+        enatTransactions.forEach(System.out::println);
         if ((enatTransactions == null || enatTransactions.isEmpty())
                 && (etsts.isEmpty() )) {
             return null;
@@ -189,7 +190,7 @@ public class ReconciliationService {
 
     public List<ENTransaction> getATMTransactions(List<ENTransaction> transactions,
             List<ETSTransaction> etsts) {
-
+        System.out.println(etsts.size());
         return getSuccessfulATMTransactions(transactions, etsts);
     }
 }

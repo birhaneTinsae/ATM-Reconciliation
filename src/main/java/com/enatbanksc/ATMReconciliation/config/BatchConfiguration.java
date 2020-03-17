@@ -6,7 +6,7 @@
 package com.enatbanksc.ATMReconciliation.config;
 
 import com.enatbanksc.ATMReconciliation.batch.JobCompletionNotificationListener;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PreDestroy;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -93,7 +94,7 @@ public class BatchConfiguration {
             {
                 setLineTokenizer(new DelimitedLineTokenizer() {
                     {
-                        setNames(new String[]{"issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno", "feeAmountOne", "feeAmountTwo"});//, "feeAmountOne", "feeAmountTwo"
+                        setNames(new String[]{"issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno", "feeAmountOne", "feeAmountTwo"});
                     }
                 });
                 setFieldSetMapper(new BeanWrapperFieldSetMapper<ETSTransaction>() {
@@ -109,7 +110,7 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public MultiResourceItemReader<ETSTransaction> mutiResourceItemReader() {
+    public MultiResourceItemReader<ETSTransaction> multiResourceItemReader() {
         MultiResourceItemReader<ETSTransaction> multiResourceItemReader = new MultiResourceItemReader<>();
         multiResourceItemReader.setResources(loadResources());
         multiResourceItemReader.setDelegate(reader());
@@ -145,7 +146,7 @@ public class BatchConfiguration {
     public Step loadETSTCSV(ItemWriter<ETSTransaction> itemWriter, ItemProcessor<ETSTransaction, ETSTransaction> itemProcessor/*JdbcBatchItemWriter<ETSTransaction> writer, Resource in*/) {
         return stepBuilderFactory.get("load-ests-csv")
                 .<ETSTransaction, ETSTransaction>chunk(100)
-                .reader(mutiResourceItemReader())
+                .reader(multiResourceItemReader())
                 .processor(itemProcessor/*processor()*/)
                 .writer(itemWriter)
                 .build();
@@ -154,9 +155,8 @@ public class BatchConfiguration {
     @Bean
     public Resource[] loadResources() {
         try {
-            //return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:D:/EtSwitch/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
 
-            return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:C:/Users/btinsae/Downloads/OCTOBER/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
+            return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:C:/Users/Birhane/OneDrive/Documents/ATM/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
         } catch (IOException ex) {
             Logger.getLogger(BatchConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         }

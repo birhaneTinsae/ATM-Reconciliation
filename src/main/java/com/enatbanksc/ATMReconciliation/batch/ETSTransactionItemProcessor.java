@@ -5,7 +5,7 @@
  */
 package com.enatbanksc.ATMReconciliation.batch;
 
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 import java.util.Date;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;

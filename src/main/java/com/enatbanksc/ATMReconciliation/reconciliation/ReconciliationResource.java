@@ -6,10 +6,10 @@
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
 import com.enatbanksc.ATMReconciliation.branch.BranchService;
-import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
-import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransactionService;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionService;
+import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
+import com.enatbanksc.ATMReconciliation.enat.ENTransactionService;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -82,8 +82,8 @@ public class ReconciliationResource {
 
         return service.getATMTransactions(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                // eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
-                eTSTransactionService.getTransactionsBetween(fromDate, toDate)
+                 eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
+              //  eTSTransactionService.getTransactionsBetween(fromDate, toDate)
         );
 
     }

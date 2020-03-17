@@ -5,7 +5,9 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
+
 import com.enatbanksc.ATMReconciliation.storage.FileSystemStorageService;
+
 import java.io.BufferedReader;
 
 import java.io.IOException;
@@ -16,12 +18,13 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -29,14 +32,14 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * @author btinsae
  */
 @Component
+@Log4j2
 public class EJUtil {
 
     // private static final String EJ_URI = "C:\\Users\\btinsae\\Documents\\EJS\\";
-    private static final String EJ_URI = "E:\\EJ_BKP\\";
+    private static final String EJ_URI = "\\\\192.168.100.99\\ejbkp";//"E:\\EJ_BKP\\";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TRANSACTION_START_TAG = "*TRANSACTION START*";
     private static final String TRANSACTION_END_TAG = "TRANSACTION END";
@@ -58,23 +61,21 @@ public class EJUtil {
         String builderString = null;
         String temp = null;
         String line = null;
-        // System.out.println(transactionDate.toString());
-        System.out.println(branchEjDir.concat(branchEjUri.replace("*", transactionDate.toString())));
-        Resource ej = null;
 
+        Resource ej = null;
+log.debug(ejUri(branchEjDir, branchEjUri, transactionDate));
         try {
             ej = new UrlResource(ejUri(branchEjDir, branchEjUri, transactionDate));
         } catch (MalformedURLException ex) {
             Logger.getLogger(EJUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!ej.exists()) {
-
+            log.debug("missing stan {} of transaction date {}", stan,transactionDate);
             return isPaid(branchEjUri, branchEjDir, stan, incrementDate(transactionDate));
 
         }
 
-        System.out.println(" Readable\t" + ej.isReadable());
-        System.out.println("STAN " + stan);
+
         if (ej.exists()) {
             if (ej.isReadable()) {
 
@@ -95,7 +96,7 @@ public class EJUtil {
                             builderString = builder.toString();
 
                             if (builderString.contains(stan) && builderString.contains(NOTES_TAKEN)) {
-                                System.out.println("STAN " + stan);
+                              log.debug("stan {}",stan);
                                 return true;
                             }
 
@@ -145,16 +146,13 @@ public class EJUtil {
     }
 
     private static Date incrementDate(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DAY_OF_MONTH, 1);
-        return cal.getTime();
-        // LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
+
+        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
 //        LocalDate localDate =date.toInstant()
 //            .atZone(ZoneId.systemDefault())
 //            .toLocalDate();
 
-        // return java.sql.Date.valueOf(localDate.plusDays(1));
+        return java.sql.Date.valueOf(localDate.plusDays(1));
         //return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 

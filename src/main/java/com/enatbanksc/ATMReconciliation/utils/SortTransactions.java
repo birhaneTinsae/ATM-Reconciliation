@@ -5,8 +5,8 @@
  */
 package com.enatbanksc.ATMReconciliation.utils;
 
-import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

@@ -6,28 +6,30 @@
 package com.enatbanksc.ATMReconciliation.batch;
 
 
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionService;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * @author btinsae
  */
 @Component
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(JobCompletionNotificationListener.class);
-    @Autowired
-    ETSTransactionService service;
+
+    private ETSTransactionService service;
+
+    public JobCompletionNotificationListener(ETSTransactionService service) {
+        this.service = service;
+    }
     //private final JdbcTemplate jdbcTemplate;
 
-//    @Autowired
+    //    @Autowired
 //    public JobCompletionNotificationListener(JdbcTemplate jdbcTemplate) {
 //        this.jdbcTemplate = jdbcTemplate;
 //    }
@@ -35,8 +37,8 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             LOG.info("!!! JOB FINISHED! Time to verify the results");
-            
-            service.getAll().forEach(transaction -> LOG.info("Found <" + transaction + "> in the database."));
+
+            //   service.getAll().forEach(transaction -> LOG.info("Found <" + transaction + "> in the database."));
 //
 //            jdbcTemplate.query("SELECT * FROM ets_transactions",
 //                    (rs, row) -> new ETSTransaction(
