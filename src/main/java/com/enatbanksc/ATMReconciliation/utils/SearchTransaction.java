@@ -7,6 +7,9 @@ package com.enatbanksc.ATMReconciliation.utils;
 
 import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
 import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -51,6 +54,7 @@ public class SearchTransaction {
         if (transactions == null || transactions.isEmpty()) {
             return false;
         }
+
         return SortTransactions.sortENTransactions(transactions)
                 .stream()
                 .filter(transaction -> transaction.getStan() == stan)
