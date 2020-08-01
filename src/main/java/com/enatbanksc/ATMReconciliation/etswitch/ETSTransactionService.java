@@ -5,25 +5,29 @@
  */
 package com.enatbanksc.ATMReconciliation.etswitch;
 
+import com.enatbanksc.ATMReconciliation.branch.Branch;
+import com.enatbanksc.ATMReconciliation.branch.BranchRepository;
 import com.enatbanksc.ATMReconciliation.utils.Common;
+
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 
 /**
- *
  * @author btinsae
  */
 @Service
 public class ETSTransactionService implements Common<ETSTransaction> {
 
     @Autowired
-    ETSTransactionRepository repository;
+    private ETSTransactionRepository repository;
+    @Autowired
+    private BranchRepository branchRepository;
 
     /**
-     *
      * @param t
      * @return
      */
@@ -33,7 +37,6 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -43,7 +46,6 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     }
 
     /**
-     *
      * @param t
      * @return
      */
@@ -53,7 +55,6 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -64,7 +65,6 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -73,19 +73,21 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     }
 
     /**
-     *
      * @param from
      * @param to
-     * @param terminalId
+     * @param branchCode
      * @return
      */
-    public List<ETSTransaction> getTransactionsBetween(Date from, Date to, String terminalId) {
-        return repository.findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(from, to, terminalId);
+    public List<ETSTransaction> getTransactionsBetween(Date from, Date to, String branchCode) {
+        Branch branch = branchRepository.findByCode(branchCode);
+        return repository.findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(from, to, branch.getTerminalId());
     }
-  public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
+
+    public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
         //return repository.findByTransactionDateBetweenOrderByTransactionDate(from, to);
         return repository.findByTransactionDateGreaterThanOrEqualAndTransactionDateLessThanOrderByTransactionDate(from, to);
     }
+
     public List<Date> loadedTransactionsDate() {
         return repository.loadedTransactionsDate();
 

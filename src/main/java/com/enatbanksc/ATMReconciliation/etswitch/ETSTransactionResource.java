@@ -6,8 +6,10 @@
 package com.enatbanksc.ATMReconciliation.etswitch;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
+
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author btinsae
  */
 @RestController
@@ -78,9 +79,11 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
 
     @GetMapping("/etst-between-dates")
     public @ResponseBody
-    List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate, @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate, String terminalId) {
+    List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+                                                     @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+                                                     String branchCode) {
         System.out.println(fromDate + "\t" + toDate);
-        return service.getTransactionsBetween(fromDate, toDate, "EA011001");
+        return service.getTransactionsBetween(fromDate, toDate, branchCode);
     }
 
     @GetMapping("/load-transactions-date")

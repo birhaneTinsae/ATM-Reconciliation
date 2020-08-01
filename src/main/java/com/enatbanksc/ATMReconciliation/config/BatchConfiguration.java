@@ -7,6 +7,7 @@ package com.enatbanksc.ATMReconciliation.config;
 
 import com.enatbanksc.ATMReconciliation.batch.JobCompletionNotificationListener;
 import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -42,7 +43,6 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 
 
 /**
- *
  * @author btinsae
  */
 @Configuration
@@ -50,12 +50,12 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 public class BatchConfiguration {
 
     @Autowired
-    JobBuilderFactory jobBuilderFactory;
+    private JobBuilderFactory jobBuilderFactory;
     @Autowired
-    StepBuilderFactory stepBuilderFactory;
+    private StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
 
     // @Value("${file.ej}")
 //    private final Resource[] resources=new Resource[]{
@@ -90,14 +90,14 @@ public class BatchConfiguration {
         FlatFileItemReader<ETSTransaction> reader = new FlatFileItemReader<>();
         reader.setLinesToSkip(1);
         reader.setStrict(false);
-        reader.setLineMapper(new DefaultLineMapper<ETSTransaction>() {
+        reader.setLineMapper(new DefaultLineMapper<>() {
             {
                 setLineTokenizer(new DelimitedLineTokenizer() {
                     {
-                        setNames(new String[]{"issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno", "feeAmountOne", "feeAmountTwo"});
+                        setNames("issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno", "feeAmountOne", "feeAmountTwo");
                     }
                 });
-                setFieldSetMapper(new BeanWrapperFieldSetMapper<ETSTransaction>() {
+                setFieldSetMapper(new BeanWrapperFieldSetMapper<>() {
                     {
                         setTargetType(ETSTransaction.class);
                         setCustomEditors(Collections.singletonMap(Date.class,
@@ -117,7 +117,7 @@ public class BatchConfiguration {
         return multiResourceItemReader;
     }
 
-//    @Bean
+    //    @Bean
 //    public ETSTransactionItemProcessor processor() {
 //        return new ETSTransactionItemProcessor();
 //    }
@@ -136,9 +136,9 @@ public class BatchConfiguration {
         return jobBuilderFactory.get("importETSTransactionsJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                // .flow(step1)
-                // .end()
-                .start(loadCSV)
+                .flow(loadCSV)
+                .end()
+//                .start(loadCSV)
                 .build();
     }
 
@@ -156,7 +156,8 @@ public class BatchConfiguration {
     public Resource[] loadResources() {
         try {
 
-            return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:C:/Users/Birhane/OneDrive/Documents/ATM/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
+            return ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                    .getResources("file:C:/Users/birhane/Documents/ATM/csv/clean/*.csv");//getResources("classpath:/input/*.csv");
         } catch (IOException ex) {
             Logger.getLogger(BatchConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -170,5 +171,5 @@ public class BatchConfiguration {
         }
     }
 
-    
+
 }

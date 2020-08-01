@@ -82,8 +82,8 @@ public class ReconciliationResource {
 
         return service.getATMTransactions(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                 eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
-              //  eTSTransactionService.getTransactionsBetween(fromDate, toDate)
+//                 eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
+                eTSTransactionService.getTransactionsBetween(fromDate, toDate)
         );
 
     }

@@ -5,8 +5,9 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionService;
+
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
 import com.enatbanksc.ATMReconciliation.storage.StorageFileNotFoundException;
 import com.enatbanksc.ATMReconciliation.storage.StorageService;
 import java.io.FileInputStream;
