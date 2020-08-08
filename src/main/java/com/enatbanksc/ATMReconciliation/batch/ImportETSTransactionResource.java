@@ -32,13 +32,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/import-daily-est-data")
 public class ImportETSTransactionResource {
 
-    @Autowired
-    JobLauncher jobLauncher;
 
-    @Autowired
+    JobLauncher jobLauncher;
     Job job;
 
- 
+    public ImportETSTransactionResource(JobLauncher jobLauncher, Job job) {
+        this.jobLauncher = jobLauncher;
+        this.job = job;
+    }
 
     @GetMapping()
     public String importESTtransactions(

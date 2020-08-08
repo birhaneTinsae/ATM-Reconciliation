@@ -32,10 +32,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("ets-transaction")
 public class ETSTransactionResource implements Common<ETSTransaction> {
 
-    @Autowired
-    ETSTransactionService service;
+    private final ETSTransactionService service;
 
-    @PostMapping()
+    public ETSTransactionResource(ETSTransactionService service) {
+        this.service = service;
+    }
+
+    @PostMapping
     @Override
     public @ResponseBody
     ETSTransaction store(@RequestBody ETSTransaction t) {
@@ -68,12 +71,6 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<ETSTransaction> getAll() {
-//        List<ETSTransaction> transactions=
-//        transactions.forEach((transaction) -> {
-//            Link link=ControllerLinkBuilder.linkTo(ETSTransactionResource.class).slash(transaction.getCardNumber()).withSelfRel();
-//            transaction.add(link);
-//        });
-
         return service.getAll();
     }
 
@@ -82,7 +79,7 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
     List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
                                                      @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
                                                      String branchCode) {
-        System.out.println(fromDate + "\t" + toDate);
+
         return service.getTransactionsBetween(fromDate, toDate, branchCode);
     }
 

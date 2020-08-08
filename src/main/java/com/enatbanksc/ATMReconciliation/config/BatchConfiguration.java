@@ -50,45 +50,21 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 @EnableBatchProcessing
 public class BatchConfiguration {
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
+
 
     @Value("${transaction.file}")
     private  Resource[] resources;
 
-    // @Value("${file.ej}")
-//    private final Resource[] resources=new Resource[]{
-//           // resourceLoader.getResource("file:C:\\Users\\btinsae\\Downloads\\OCTOBER\\csv\\EB_**.csv")
-//    ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath:/directory/**/*-context.xml")        
-//    
-//    };
-//            
-//            new ClassPathResource[]{
-//        new ClassPathResource("input//EB_*.csv")
-//    };
-//    @Bean
-//    public FlatFileItemReader<ETSTransaction> reader(/*@Value("${input}") Resource in*/) {
-//        return new FlatFileItemReaderBuilder<ETSTransaction>()
-//                .name("etstItemReader")
-//                //.resource(new ClassPathResource("input\\member_reconcilation_report.csv"))
-//                .linesToSkip(1)
-//                .delimited()
-//                .delimiter(",")
-//                .names(new String[]{"issuer", "acquirer", "MTI", "cardNumber", "amount", "currency", "transactionDate", "transactionDesc", "terminalId", "transactionPlace", "stan", "refnumF37", "authIdRespF38", "FeUtrnno", "BoUtrnno", "feeAmountOne", "feeAmountTwo"})
-//                .fieldSetMapper(new BeanWrapperFieldSetMapper<ETSTransaction>() {
-//                    {
-//                        setTargetType(ETSTransaction.class);
-//                        setCustomEditors(Collections.singletonMap(Date.class,
-//                                new CustomDateEditor(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss"), false)));
-//                    }
-//                })
-//                .build();
-//    }
+    public BatchConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, ResourceLoader resourceLoader) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.resourceLoader = resourceLoader;
+    }
+
     @Bean
     public FlatFileItemReader<ETSTransaction> reader() {
         FlatFileItemReader<ETSTransaction> reader = new FlatFileItemReader<>();
@@ -122,20 +98,7 @@ public class BatchConfiguration {
         return multiResourceItemReader;
     }
 
-    //    @Bean
-//    public ETSTransactionItemProcessor processor() {
-//        return new ETSTransactionItemProcessor();
-//    }
-//    @Bean
-//    public JdbcBatchItemWriter<ETSTransaction> writer(DataSource dataSource) {
-//        return new JdbcBatchItemWriterBuilder<ETSTransaction>()
-//                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-//                .sql("INSERT INTO ets_transactions (  issuer,  acquirer,  MTI,  cardNumber,  amount,  currency,  transactionDate,  transactionDesc,  terminalId,  transactionPlace,  stan,  refnumF37,  authIdRespF38,  FeUtrnno,  BoUtrnno) VALUES (:issuer,  :acquirer,  :MTI,  :cardNumber,  :amount,  :currency,  :transactionDate,  :transactionDesc,  :terminalId,  :transactionPlace,  :stan,  :refnumF37,  :authIdRespF38,  :FeUtrnno,  :BoUtrnno)")
-//                .dataSource(dataSource)
-//                .build();
-//    }
-    // end::readerwriterprocessor[]
-    // tag::jobstep[]
+
     @Bean
     public Job importETSTransactionsJob(JobCompletionNotificationListener listener, Step loadCSV) {
         return jobBuilderFactory.get("importETSTransactionsJob")
