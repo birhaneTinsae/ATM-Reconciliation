@@ -33,6 +33,7 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,9 @@ public class BatchConfiguration {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Value("${transaction.file}")
+    private  Resource[] resources;
 
     // @Value("${file.ej}")
 //    private final Resource[] resources=new Resource[]{
@@ -88,7 +92,7 @@ public class BatchConfiguration {
     @Bean
     public FlatFileItemReader<ETSTransaction> reader() {
         FlatFileItemReader<ETSTransaction> reader = new FlatFileItemReader<>();
-        reader.setLinesToSkip(1);
+        reader.setLinesToSkip(4);
         reader.setStrict(false);
         reader.setLineMapper(new DefaultLineMapper<>() {
             {
@@ -112,7 +116,8 @@ public class BatchConfiguration {
     @Bean
     public MultiResourceItemReader<ETSTransaction> multiResourceItemReader() {
         MultiResourceItemReader<ETSTransaction> multiResourceItemReader = new MultiResourceItemReader<>();
-        multiResourceItemReader.setResources(loadResources());
+       // multiResourceItemReader.setResources(loadResources());
+        multiResourceItemReader.setResources(resources);
         multiResourceItemReader.setDelegate(reader());
         return multiResourceItemReader;
     }
