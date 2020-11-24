@@ -6,6 +6,8 @@
 package com.enatbanksc.ATMReconciliation.batch;
 
 import java.util.Date;
+
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/import-daily-est-data")
+@Log4j2
 public class ImportETSTransactionResource {
 
 
@@ -42,22 +45,13 @@ public class ImportETSTransactionResource {
     }
 
     @GetMapping()
-    public String importESTtransactions(
-            @RequestParam("import_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date importDate) {
+    public String importESTtransactions() {
         Logger logger = LoggerFactory.getLogger(this.getClass());
         try {
-            JobParameters jobParameters = new JobParametersBuilder().addDate("import_date", importDate)
-                    .toJobParameters();
+            JobParameters jobParameters = new JobParametersBuilder().addLong("uniqueness", System.nanoTime()).toJobParameters();//new JobParametersBuilder().addDate("import_date", importDate)
 
             jobLauncher.run(job, jobParameters);
-        } catch (JobParametersInvalidException e) {
-            logger.info(e.getMessage());
-        } catch (JobExecutionAlreadyRunningException e) {
-            logger.info(e.getMessage());
-        } catch (JobInstanceAlreadyCompleteException e) {
-            logger.info(e.getMessage());
-        } catch (JobRestartException e) {
+        } catch (JobParametersInvalidException | JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException | JobRestartException e) {
             logger.info(e.getMessage());
         }
 

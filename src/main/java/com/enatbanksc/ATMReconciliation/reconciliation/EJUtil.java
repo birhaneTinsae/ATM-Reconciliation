@@ -52,11 +52,10 @@ public class EJUtil {
     static FileSystemStorageService fileSystemStorage;
 //    
 
-    public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, Date transactionDate) {
+    public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, LocalDate transactionDate) {
         /**
          * build ejUri by concatenating
          */
-        // String ejUri = ejURI(branchEjDir, branchEjUri, transactionDate);
         StringBuilder builder = new StringBuilder();
         String builderString = null;
         String temp = null;
@@ -141,19 +140,12 @@ log.debug(ejUri(branchEjDir, branchEjUri, transactionDate));
         return EJ_URI.concat(branchEjDir.concat(branchEjUri.replace(DATE_PLACEHOLDER, dateString)));
     }
 
-    private static URI ejUri(String branchEjDir, String branchEjUri, Date transactionDate) {
+    private static URI ejUri(String branchEjDir, String branchEjUri, LocalDate transactionDate) {
         return Paths.get(EJ_URI, branchEjDir.concat(branchEjUri.replace(DATE_PLACEHOLDER, transactionDate.toString()))).toUri();
     }
 
-    private static Date incrementDate(Date date) {
-
-        LocalDate localDate = new java.sql.Date(date.getTime()).toLocalDate();
-//        LocalDate localDate =date.toInstant()
-//            .atZone(ZoneId.systemDefault())
-//            .toLocalDate();
-
-        return java.sql.Date.valueOf(localDate.plusDays(1));
-        //return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    private static LocalDate incrementDate(LocalDate date) {
+        return date.plusDays(1);
     }
 
 }

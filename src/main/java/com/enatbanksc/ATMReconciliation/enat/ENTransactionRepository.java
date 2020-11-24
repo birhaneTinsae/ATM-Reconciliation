@@ -5,6 +5,7 @@
  */
 package com.enatbanksc.ATMReconciliation.enat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ENTransactionRepository extends JpaRepository<ENTransaction, Integer> {
 
-    List<ENTransaction> findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(Date fromDate, Date toDate, String branch);
-    List<ENTransaction> findByTransactionDateBetweenAndBranchOrderById(Date fromDate, Date toDate, String branch);
+    List<ENTransaction> findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(LocalDate fromDate, LocalDate toDate, String branch);
+    List<ENTransaction> findByTransactionDateBetweenAndBranchOrderById(LocalDate fromDate, LocalDate toDate, String branch);
 }

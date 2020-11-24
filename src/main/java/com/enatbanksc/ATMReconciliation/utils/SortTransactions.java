@@ -31,7 +31,7 @@ public class SortTransactions {
 			return null;
 		}
 		Comparator<ETSTransaction> comparator = Comparator.comparingInt(ETSTransaction::getStan);
-		Collections.sort(transactions, comparator);
+		transactions.sort(comparator);
 
 		return transactions;
 	}
@@ -48,7 +48,7 @@ public class SortTransactions {
 		}
 		Comparator<ENTransaction> comparator;
 		comparator = Comparator.comparingInt(ENTransaction::getId);
-		Collections.sort(transactions, comparator);
+		transactions.sort(comparator);
 		return transactions;
 	}
 

@@ -9,12 +9,12 @@
     <packaging>jar</packaging>
 
     <name>ATM-Reconciliation Enhanced</name>
-    <description>ATM transaction reconciliation </description>
+    <description>ATM transaction reconciliation</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
+        <version>2.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -62,37 +62,27 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>            
+            <artifactId>spring-hateoas</artifactId>
         </dependency>
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>-->
+        <!--        <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-security</artifactId>
+                </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
-       <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-           <exclusions>
-               <exclusion>
-                   <groupId>org.springframework.boot</groupId>
-                   <artifactId>spring-boot-starter-logging</artifactId>
-               </exclusion>
-           </exclusions>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-starter-logging</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
 
         <!--        <dependency>
             <groupId>org.springframework</groupId>
@@ -139,16 +129,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.batch</groupId>-->
-<!--            <artifactId>spring-batch-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-        <!--        <dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -182,14 +172,14 @@
     </pluginRepositories>
     <build>
         <finalName>enat-atm-reconciliation</finalName>
-        <plugins>            
+        <plugins>
             <plugin>
                 <configuration>
                     <executable>true</executable>
                 </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+                <!--                <forceJavacCompilerUse>true</forceJavacCompilerUse>-->
             </plugin>
         </plugins>
     </build>

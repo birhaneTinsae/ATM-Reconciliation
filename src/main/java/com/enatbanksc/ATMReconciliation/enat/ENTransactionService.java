@@ -6,6 +6,8 @@
 package com.enatbanksc.ATMReconciliation.enat;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +73,7 @@ public class ENTransactionService implements Common<ENTransaction> {
         return repository.findAll();
     }
 
-    public List<ENTransaction> getEntTransactionBetween(Date fromDate, Date toDate, String branch) {
+    public List<ENTransaction> getEntTransactionBetween(LocalDate fromDate, LocalDate toDate, String branch) {
        // return repository.findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(fromDate, toDate, branch);
         return repository.findByTransactionDateBetweenAndBranchOrderById(fromDate, toDate, branch);
     }

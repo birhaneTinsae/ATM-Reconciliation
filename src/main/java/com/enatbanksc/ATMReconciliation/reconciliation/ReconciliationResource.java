@@ -10,9 +10,13 @@ import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
 import com.enatbanksc.ATMReconciliation.enat.ENTransactionService;
 import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
+
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,32 +27,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * @author btinsae
  */
 @RestController
 @RequestMapping("/reconcile")
+@RequiredArgsConstructor
 public class ReconciliationResource {
 
-    @Autowired
-    private ReconciliationService service;
-    @Autowired
-    private ETSTransactionService eTSTransactionService;
-    @Autowired
-    private ENTransactionService eNTransactionService;
-    @Autowired
-    private BranchService branchService;
+    private final ReconciliationService service;
+    private final ETSTransactionService eTSTransactionService;
+    private final ENTransactionService eNTransactionService;
+    private final BranchService branchService;
 
     @GetMapping("/reversals/{branchId}")
     public @ResponseBody
     List<ENTransaction> getReversals(
             @RequestParam("from_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam("to_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
             @PathVariable String branchId) {
 
-        Date newToDate = incrementDateByOne(toDate);
+        LocalDate newToDate = incrementDateByOne(toDate);
 
         return service.getReversals(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
@@ -59,9 +59,9 @@ public class ReconciliationResource {
     public @ResponseBody
     List<ETSTransaction> getPosts(
             @RequestParam("from_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam("to_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
             @PathVariable String branchId) {
 
         return service.getPosts(
@@ -75,9 +75,9 @@ public class ReconciliationResource {
     public @ResponseBody
     List<ENTransaction> getAtmTransactions(
             @RequestParam("from_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam("to_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
             @PathVariable String branchId) {
 
         return service.getATMTransactions(
@@ -92,21 +92,22 @@ public class ReconciliationResource {
     public @ResponseBody
     List<ENTransaction> getClaims(
             @RequestParam("from_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam("to_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
             @PathVariable String branchId) {
 
-        Date newToDate = incrementDateByOne(toDate);
+        LocalDate newToDate = incrementDateByOne(toDate);
         return service.getClaims(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
                 eTSTransactionService.getTransactionsBetween(fromDate, newToDate, branchService.show(Integer.parseInt(branchId)).getTerminalId()));
     }
 
-    private Date incrementDateByOne(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        return calendar.getTime();
+    private LocalDate incrementDateByOne(LocalDate date) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        calendar.add(Calendar.DAY_OF_MONTH, 1);
+//        return calendar.getTime();
+        return date.plusDays(1);
     }
 }

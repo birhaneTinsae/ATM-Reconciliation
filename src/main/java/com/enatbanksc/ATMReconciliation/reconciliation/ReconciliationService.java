@@ -12,6 +12,8 @@ import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.utils.SearchTransaction;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,9 +77,8 @@ public class ReconciliationService {
      * @return
      */
     private List<ENTransaction> getSuccessfulATMTransactions(
-            List<ENTransaction> enatTransactions,
+          @NotNull List<ENTransaction> enatTransactions,
             List<ETSTransaction> etsts) {
-        enatTransactions.forEach(System.out::println);
         if ((enatTransactions == null || enatTransactions.isEmpty())
                 && (etsts.isEmpty() )) {
             return null;

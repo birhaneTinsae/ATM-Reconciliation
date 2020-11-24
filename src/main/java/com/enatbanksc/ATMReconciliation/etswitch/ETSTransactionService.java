@@ -9,6 +9,7 @@ import com.enatbanksc.ATMReconciliation.branch.Branch;
 import com.enatbanksc.ATMReconciliation.branch.BranchRepository;
 import com.enatbanksc.ATMReconciliation.utils.Common;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -78,12 +79,12 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      * @param branchCode
      * @return
      */
-    public List<ETSTransaction> getTransactionsBetween(Date from, Date to, String branchCode) {
+    public List<ETSTransaction> getTransactionsBetween(LocalDate from, LocalDate to, String branchCode) {
         Branch branch = branchRepository.findByCode(branchCode);
         return repository.findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(from, to, branch.getTerminalId());
     }
 
-    public List<ETSTransaction> getTransactionsBetween(Date from, Date to) {
+    public List<ETSTransaction> getTransactionsBetween(LocalDate from, LocalDate to) {
         //return repository.findByTransactionDateBetweenOrderByTransactionDate(from, to);
         return repository.findByTransactionDateGreaterThanOrEqualAndTransactionDateLessThanOrderByTransactionDate(from, to);
     }

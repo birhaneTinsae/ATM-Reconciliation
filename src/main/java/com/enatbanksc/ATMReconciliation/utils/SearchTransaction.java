@@ -13,19 +13,13 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *
  * @author btinsae
  * @version 1.0
  */
 
 public class SearchTransaction {
 
-//    @Autowired
-//    private SortTransactions sort;
 
-//    public SearchTransaction(SortTransactions sort) {
-//        this.sort = sort;
-//    }
     /**
      * Search for the transaction given stan
      *
@@ -37,10 +31,12 @@ public class SearchTransaction {
         if (transactions == null || transactions.isEmpty()) {
             return false;
         }
-        return SortTransactions.sortETSTransactions(transactions)
-                .stream()
-                .filter(transaction -> transaction.getStan() == stan)
-                .findFirst().isPresent();// != "";
+        var txn = new ETSTransaction();
+        txn.setStan(stan);
+        return Collections.binarySearch(SortTransactions.sortETSTransactions(transactions), txn, Comparator.comparing(ETSTransaction::getStan)) > 0;
+//        return SortTransactions.sortETSTransactions(transactions)
+//                .stream()
+//                .anyMatch(transaction -> transaction.getStan() == stan);
     }
 
     /**
@@ -50,14 +46,18 @@ public class SearchTransaction {
      * @param stan
      * @return true if the transaction is found else false.
      */
-    public static boolean searchENTransaction( List<ENTransaction> transactions, int stan) {
+    public static boolean searchENTransaction(List<ENTransaction> transactions, int stan) {
         if (transactions == null || transactions.isEmpty()) {
             return false;
         }
-
-        return SortTransactions.sortENTransactions(transactions)
-                .stream()
-                .filter(transaction -> transaction.getStan() == stan)
-                .findFirst().isPresent();
+        var txn = new ENTransaction();
+        txn.setStan(stan);
+        return Collections.binarySearch(SortTransactions.sortENTransactions(transactions),
+                txn,
+                Comparator.comparing(ENTransaction::getStan)) > 0;
+//
+//        return SortTransactions.sortENTransactions(transactions)
+//                .stream()
+//                .anyMatch(transaction -> transaction.getStan() == stan);
     }
 }

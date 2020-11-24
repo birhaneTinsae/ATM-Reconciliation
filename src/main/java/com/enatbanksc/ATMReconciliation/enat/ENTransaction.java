@@ -8,6 +8,7 @@ package com.enatbanksc.ATMReconciliation.enat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,9 +41,8 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     private String branch;
     @Column(name = "LCY_AMOUNT")
     private float amount;
-    @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "VALUE_DT")
-    private Date transactionDate;
+    private LocalDate transactionDate;
     
 
     @Column(name = "TRN_CODE")
@@ -50,61 +50,9 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
 
     @Override
     public int compareTo(ENTransaction o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-//
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public int getStan() {
-//        return stan;
-//    }
-//
-//    public void setStan(int stan) {
-//        this.stan = stan;
-//    }
-//
-//    public String getBranch() {
-//        return branch;
-//    }
-//
-//    public void setBranch(String branch) {
-//        this.branch = branch;
-//    }
-//
-//    public float getAmount() {
-//        return amount;
-//    }
-//
-//    public void setAmount(float amount) {
-//        this.amount = amount;
-//    }
-//
-//    public Date getTransactionDate() {
-//        return transactionDate;
-//    }
-//
-//    public void setTransactionDate(Date transactionDate) {
-//        this.transactionDate = transactionDate;
-//    }
-//
-//    public String getTransactionCode() {
-//        return transactionCode;
-//    }
-//
-//    public void setTransactionCode(String transactionCode) {
-//        this.transactionCode = transactionCode;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "ENTransaction{" + "id=" + id + ", stan=" + stan + ", branch=" + branch + ", amount=" + amount + ", transactionDate=" + transactionDate + ", transactionCode=" + transactionCode + '}';
-//    }
+
 
 }
 

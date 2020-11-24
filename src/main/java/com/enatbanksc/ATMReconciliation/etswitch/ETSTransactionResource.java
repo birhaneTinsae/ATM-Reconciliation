@@ -7,6 +7,7 @@ package com.enatbanksc.ATMReconciliation.etswitch;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -76,8 +77,8 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
 
     @GetMapping("/etst-between-dates")
     public @ResponseBody
-    List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
-                                                     @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+    List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+                                                     @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
                                                      String branchCode) {
 
         return service.getTransactionsBetween(fromDate, toDate, branchCode);
