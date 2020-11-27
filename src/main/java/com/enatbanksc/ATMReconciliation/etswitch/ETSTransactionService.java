@@ -13,20 +13,25 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 /**
  * @author btinsae
  */
 @Service
+@RequiredArgsConstructor
 public class ETSTransactionService implements Common<ETSTransaction> {
 
-    @Autowired
-    private ETSTransactionRepository repository;
-    @Autowired
-    private BranchRepository branchRepository;
+    private final ETSTransactionRepository repository;
+    private final BranchRepository branchRepository;
 
     /**
      * @param t
@@ -43,7 +48,8 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      */
     @Override
     public ETSTransaction show(int id) {
-        return repository.getOne(id);
+        return repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     /**
@@ -73,6 +79,11 @@ public class ETSTransactionService implements Common<ETSTransaction> {
         return repository.findAll();
     }
 
+    @Override
+    public Page<ETSTransaction> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
     /**
      * @param from
      * @param to
@@ -85,7 +96,6 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     }
 
     public List<ETSTransaction> getTransactionsBetween(LocalDate from, LocalDate to) {
-        //return repository.findByTransactionDateBetweenOrderByTransactionDate(from, to);
         return repository.findByTransactionDateGreaterThanOrEqualAndTransactionDateLessThanOrderByTransactionDate(from, to);
     }
 

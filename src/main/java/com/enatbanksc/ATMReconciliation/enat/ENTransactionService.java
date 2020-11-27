@@ -10,21 +10,25 @@ import com.enatbanksc.ATMReconciliation.utils.Common;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author btinsae
  */
 @Service
+@RequiredArgsConstructor
+@Log4j2
 public class ENTransactionService implements Common<ENTransaction> {
 
-    @Autowired
-    ENTransactionRepository repository;
+    private final ENTransactionRepository repository;
 
     /**
-     *
      * @param t
      * @return ENTtransaction object
      */
@@ -34,7 +38,6 @@ public class ENTransactionService implements Common<ENTransaction> {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -44,7 +47,6 @@ public class ENTransactionService implements Common<ENTransaction> {
     }
 
     /**
-     *
      * @param t
      * @return
      */
@@ -54,7 +56,6 @@ public class ENTransactionService implements Common<ENTransaction> {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -65,7 +66,6 @@ public class ENTransactionService implements Common<ENTransaction> {
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -73,8 +73,13 @@ public class ENTransactionService implements Common<ENTransaction> {
         return repository.findAll();
     }
 
+    @Override
+    public Page<ENTransaction> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
     public List<ENTransaction> getEntTransactionBetween(LocalDate fromDate, LocalDate toDate, String branch) {
-       // return repository.findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(fromDate, toDate, branch);
+        log.debug(String.format("From date %s to date %s and branch %s", fromDate.toString(), toDate.toString(), branch));
         return repository.findByTransactionDateBetweenAndBranchOrderById(fromDate, toDate, branch);
     }
 

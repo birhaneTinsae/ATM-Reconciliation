@@ -8,6 +8,8 @@ package com.enatbanksc.ATMReconciliation.branch;
 import com.enatbanksc.ATMReconciliation.utils.Common;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -68,6 +70,11 @@ public class BranchService implements Common<Branch> {
     @Override
     public List<Branch> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<Branch> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Branch getBranchByTerminalId(String terminalId) {
