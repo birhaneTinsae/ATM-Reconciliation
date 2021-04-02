@@ -5,9 +5,6 @@
  */
 package com.enatbanksc.ATMReconciliation.utils;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 
 /**
@@ -25,8 +22,7 @@ public interface Common<T> {
      *
      * @return
      */
-    List<T> getAll();
-    Page<T> getAll(Pageable pageable);
+    Iterable<T> getAll();
     
             
 }

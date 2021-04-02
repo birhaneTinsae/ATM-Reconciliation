@@ -5,19 +5,16 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-import com.enatbanksc.ATMReconciliation.branch.BranchService;
+import com.enatbanksc.ATMReconciliation.local.branch.BranchService;
 import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
 import com.enatbanksc.ATMReconciliation.enat.ENTransactionService;
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionService;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ *
  * @author btinsae
  */
 @RestController
@@ -66,7 +64,7 @@ public class ReconciliationResource {
 
         return service.getPosts(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getCode())
+                eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
         );
 
     }
@@ -82,7 +80,6 @@ public class ReconciliationResource {
 
         return service.getATMTransactions(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-//                 eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
                 eTSTransactionService.getTransactionsBetween(fromDate, toDate)
         );
 
@@ -104,10 +101,6 @@ public class ReconciliationResource {
     }
 
     private LocalDate incrementDateByOne(LocalDate date) {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(date);
-//        calendar.add(Calendar.DAY_OF_MONTH, 1);
-//        return calendar.getTime();
         return date.plusDays(1);
     }
 }

@@ -1,0 +1,42 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: "ATM-RECONCILIATION"
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: 'http://10.1.12.70:8081/auth/realms/enat'
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+application:
+  allowedOrigin:
+    - 'http://196.189.90.121:71'
+    - 'http://localhost:4200'
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://10.1.12.70:8761/eureka}
+  instance:
+    preferIpAddress: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

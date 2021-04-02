@@ -5,10 +5,10 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-import com.enatbanksc.ATMReconciliation.branch.Branch;
-import com.enatbanksc.ATMReconciliation.branch.BranchService;
+import com.enatbanksc.ATMReconciliation.local.branch.Branch;
+import com.enatbanksc.ATMReconciliation.local.branch.BranchService;
 import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.utils.SearchTransaction;
 
 import java.util.List;

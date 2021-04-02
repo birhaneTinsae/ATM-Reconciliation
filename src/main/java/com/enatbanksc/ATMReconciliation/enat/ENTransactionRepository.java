@@ -12,12 +12,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * This will be implemented by spring boot to eNTransactionRepositoriy bean.
+ * This will be implemented by spring boot to eNTransactionRepository bean.
  *
  * @author btinsae
  */
 @Repository
 public interface ENTransactionRepository extends JpaRepository<ENTransaction, Integer> {
 
+    List<ENTransaction> findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(LocalDate fromDate, LocalDate toDate, String branch);
     List<ENTransaction> findByTransactionDateBetweenAndBranchOrderById(LocalDate fromDate, LocalDate toDate, String branch);
 }

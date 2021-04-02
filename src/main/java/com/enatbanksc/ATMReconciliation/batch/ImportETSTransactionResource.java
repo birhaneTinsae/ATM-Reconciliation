@@ -5,12 +5,8 @@
  */
 package com.enatbanksc.ATMReconciliation.batch;
 
-import java.util.Date;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -19,41 +15,33 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
- *
  * @author btinsae
  */
 @RestController
 @RequestMapping("/import-daily-est-data")
+@RequiredArgsConstructor
 @Log4j2
 public class ImportETSTransactionResource {
 
+    private final JobLauncher jobLauncher;
+    private final Job job;
 
-    JobLauncher jobLauncher;
-    Job job;
-
-    public ImportETSTransactionResource(JobLauncher jobLauncher, Job job) {
-        this.jobLauncher = jobLauncher;
-        this.job = job;
-    }
-
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping()
-    public String importESTtransactions() {
-        Logger logger = LoggerFactory.getLogger(this.getClass());
-        try {
-            JobParameters jobParameters = new JobParametersBuilder().addLong("uniqueness", System.nanoTime()).toJobParameters();//new JobParametersBuilder().addDate("import_date", importDate)
+    public String importESTransactions(
+            @RequestParam("import_date")
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date importDate) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+        JobParameters jobParameters = new JobParametersBuilder().addDate("import_date", importDate)
+                .toJobParameters();
 
-            jobLauncher.run(job, jobParameters);
-        } catch (JobParametersInvalidException | JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException | JobRestartException e) {
-            logger.info(e.getMessage());
-        }
+        jobLauncher.run(job, jobParameters);
 
         return "Done";
     }

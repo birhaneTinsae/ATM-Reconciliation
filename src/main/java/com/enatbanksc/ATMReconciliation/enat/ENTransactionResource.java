@@ -6,6 +6,7 @@
 package com.enatbanksc.ATMReconciliation.enat;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +22,13 @@ import java.util.List;
  */
 //This means that this class is a Rest Controller
 @RestController
-
 // This means URL's start with /demo (after Application path)
 @RequestMapping("/enat-transaction")
+@RequiredArgsConstructor
 public class ENTransactionResource implements Common<ENTransaction> {
 
     // This means to get the bean called eNTransactionService
-    @Autowired
-    ENTransactionService service;
+    private final ENTransactionService service;
 
     @PostMapping
     @Override
@@ -80,7 +80,6 @@ public class ENTransactionResource implements Common<ENTransaction> {
     List<ENTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                                     @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
                                                     String branchCode) {
-        System.out.println(fromDate + "\t" + toDate);
         return service.getEntTransactionBetween(fromDate, toDate, branchCode);
     }
 

@@ -3,27 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.enatbanksc.ATMReconciliation.branch;
+package com.enatbanksc.ATMReconciliation.local.branch;
 
+import com.enatbanksc.ATMReconciliation.exceptions.EntityNotFoundException;
 import com.enatbanksc.ATMReconciliation.utils.Common;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author btinsae
  */
 @Service
+@RequiredArgsConstructor
 public class BranchService implements Common<Branch> {
 
-    @Autowired
-    BranchRepository repository;
+    private final BranchRepository repository;
 
     /**
-     *
      * @param t
      * @return
      */
@@ -33,17 +30,16 @@ public class BranchService implements Common<Branch> {
     }
 
     /**
-     *
      * @param id
      * @return
      */
     @Override
     public Branch show(int id) {
-        return repository.getOne(id);
+        return repository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException(Branch.class,"Id",String.valueOf(id)));
     }
 
     /**
-     *
      * @param t
      * @return
      */
@@ -53,7 +49,6 @@ public class BranchService implements Common<Branch> {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -64,23 +59,18 @@ public class BranchService implements Common<Branch> {
     }
 
     /**
-     *
      * @return
      */
     @Override
-    public List<Branch> getAll() {
+    public Iterable<Branch> getAll() {
         return repository.findAll();
-    }
-
-    @Override
-    public Page<Branch> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
     }
 
     public Branch getBranchByTerminalId(String terminalId) {
         return repository.findByTerminalId(terminalId);
     }
-    public Branch getBranchByCode(String code){
+
+    public Branch getBranchByCode(String code) {
         return repository.findByCode(code);
     }
 }

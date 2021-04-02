@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.enatbanksc.ATMReconciliation.branch;
+package com.enatbanksc.ATMReconciliation.local.branch;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/branch")
 @RequiredArgsConstructor
+@Log4j2
 public class BranchResource implements Common<Branch> {
 
     private final BranchService service;
@@ -68,12 +65,7 @@ public class BranchResource implements Common<Branch> {
     @GetMapping()
     @Override
     public @ResponseBody
-    List<Branch> getAll() {
+    Iterable<Branch> getAll() {
         return service.getAll();
-    }
-
-    @Override
-    public Page<Branch> getAll(Pageable pageable) {
-        return service.getAll(pageable);
     }
 }

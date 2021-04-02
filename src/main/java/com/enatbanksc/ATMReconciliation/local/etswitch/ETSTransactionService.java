@@ -3,31 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.enatbanksc.ATMReconciliation.etswitch;
+package com.enatbanksc.ATMReconciliation.local.etswitch;
 
-import com.enatbanksc.ATMReconciliation.branch.Branch;
-import com.enatbanksc.ATMReconciliation.branch.BranchRepository;
+import com.enatbanksc.ATMReconciliation.local.branch.Branch;
+import com.enatbanksc.ATMReconciliation.local.branch.BranchRepository;
+import com.enatbanksc.ATMReconciliation.exceptions.EntityNotFoundException;
 import com.enatbanksc.ATMReconciliation.utils.Common;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 
 /**
  * @author btinsae
  */
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ETSTransactionService implements Common<ETSTransaction> {
 
     private final ETSTransactionRepository repository;
@@ -49,7 +43,7 @@ public class ETSTransactionService implements Common<ETSTransaction> {
     @Override
     public ETSTransaction show(int id) {
         return repository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(()->new EntityNotFoundException(ETSTransaction.class,"id",String.valueOf(id)));
     }
 
     /**
@@ -75,13 +69,8 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      * @return
      */
     @Override
-    public List<ETSTransaction> getAll() {
+    public Iterable<ETSTransaction> getAll() {
         return repository.findAll();
-    }
-
-    @Override
-    public Page<ETSTransaction> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
     }
 
     /**
@@ -99,7 +88,7 @@ public class ETSTransactionService implements Common<ETSTransaction> {
         return repository.findByTransactionDateGreaterThanOrEqualAndTransactionDateLessThanOrderByTransactionDate(from, to);
     }
 
-    public List<Date> loadedTransactionsDate() {
+    public List<LocalDate> loadedTransactionsDate() {
         return repository.loadedTransactionsDate();
 
     }

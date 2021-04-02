@@ -9,12 +9,12 @@
     <packaging>jar</packaging>
 
     <name>ATM-Reconciliation Enhanced</name>
-    <description>ATM transaction reconciliation</description>
+    <description>ATM transaction reconciliation </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.0</version>
+        <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -28,6 +28,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -62,27 +72,37 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>
+            <artifactId>spring-hateoas</artifactId>            
         </dependency>
-        <!--        <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-security</artifactId>
-                </dependency>-->
+<!--        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
-        <dependency>
+       <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
+           <exclusions>
+               <exclusion>
+                   <groupId>org.springframework.boot</groupId>
+                   <artifactId>spring-boot-starter-logging</artifactId>
+               </exclusion>
+           </exclusions>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-logging</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
 
         <!--        <dependency>
             <groupId>org.springframework</groupId>
@@ -129,21 +149,41 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.batch</groupId>
-            <artifactId>spring-batch-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.batch</groupId>-->
+<!--            <artifactId>spring-batch-test</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+        <!--        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-data-rest</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-hateoas</artifactId>
+            <version>1.5.4</version>
         </dependency>
     </dependencies>
     <repositories>
@@ -172,14 +212,14 @@
     </pluginRepositories>
     <build>
         <finalName>enat-atm-reconciliation</finalName>
-        <plugins>
+        <plugins>            
             <plugin>
                 <configuration>
                     <executable>true</executable>
                 </configuration>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--                <forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+<!--                <forceJavacCompilerUse>true</forceJavacCompilerUse>-->
             </plugin>
         </plugins>
     </build>

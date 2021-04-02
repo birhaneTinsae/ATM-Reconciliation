@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.enatbanksc.ATMReconciliation.etswitch;
+package com.enatbanksc.ATMReconciliation.local.etswitch;
 
 import com.enatbanksc.ATMReconciliation.utils.Common;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,15 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("ets-transaction")
+@Log4j2
+@RequiredArgsConstructor
 public class ETSTransactionResource implements Common<ETSTransaction> {
 
-    private final ETSTransactionService service;
+   private final ETSTransactionService service;
 
-    public ETSTransactionResource(ETSTransactionService service) {
-        this.service = service;
-    }
-
-    @PostMapping
+    @PostMapping()
     @Override
     public @ResponseBody
     ETSTransaction store(@RequestBody ETSTransaction t) {
@@ -73,13 +69,8 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
     @Override
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    List<ETSTransaction> getAll() {
+    Iterable<ETSTransaction> getAll() {
         return service.getAll();
-    }
-
-    @Override
-    public Page<ETSTransaction> getAll(Pageable pageable) {
-        return service.getAll(pageable);
     }
 
     @GetMapping("/etst-between-dates")
@@ -87,13 +78,12 @@ public class ETSTransactionResource implements Common<ETSTransaction> {
     List<ETSTransaction> getTransactionsBetweenDates(@RequestParam("from_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                                      @RequestParam("to_date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
                                                      String branchCode) {
-
         return service.getTransactionsBetween(fromDate, toDate, branchCode);
     }
 
     @GetMapping("/load-transactions-date")
     public @ResponseBody
-    List<Date> getLoadedETSTransactionDate() {
+    List<LocalDate> getLoadedETSTransactionDate() {
         return service.loadedTransactionsDate();
     }
 

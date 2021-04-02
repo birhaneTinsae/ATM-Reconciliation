@@ -8,7 +8,6 @@ package com.enatbanksc.ATMReconciliation.enat;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,8 +40,9 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     private String branch;
     @Column(name = "LCY_AMOUNT")
     private float amount;
+    @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "VALUE_DT")
-    private LocalDate transactionDate;
+    private Date transactionDate;
     
 
     @Column(name = "TRN_CODE")
@@ -50,9 +50,8 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
 
     @Override
     public int compareTo(ENTransaction o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
 }
 

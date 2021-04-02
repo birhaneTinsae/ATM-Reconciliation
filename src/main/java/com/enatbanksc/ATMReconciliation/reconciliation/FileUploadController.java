@@ -6,16 +6,14 @@
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
 
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionService;
 import com.enatbanksc.ATMReconciliation.storage.StorageFileNotFoundException;
 import com.enatbanksc.ATMReconciliation.storage.StorageService;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.servlet.MultipartConfigElement;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -86,7 +82,7 @@ public class FileUploadController {
 
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) throws IOException {
+            RedirectAttributes redirectAttributes) throws IOException {
 
         storageService.store(file);
         /**
@@ -157,6 +153,7 @@ public class FileUploadController {
 //                    default:
 //                        data.get(i).add("0");
 //                }
+                System.out.println(cell.getCellType() + "\t" + cell.getColumnIndex());
                 switch (cell.getColumnIndex()) {
                     case 1:
                         t.setIssuer(cell.getRichStringCellValue().getString());
@@ -183,12 +180,15 @@ public class FileUploadController {
                         t.setCurrency(cell.getRichStringCellValue().getString());
                         break;
                     case 9:
-//                        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
-                    {
-//                                t.setTransactionDate(format.parse(cell.getRichStringCellValue().getString()));
-                        t.setTransactionDate(LocalDate.parse(cell.getRichStringCellValue().getString()));
-                    }
-                    break;
+                        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+                         {
+                            try {
+                                t.setTransactionDate(format.parse(cell.getRichStringCellValue().getString()));
+                            } catch (ParseException ex) {
+                                Logger.getLogger(FileUploadController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        break;
 
                     case 11:
                         t.setTransactionDesc(cell.getRichStringCellValue().getString());

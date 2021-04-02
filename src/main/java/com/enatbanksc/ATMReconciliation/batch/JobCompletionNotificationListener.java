@@ -6,22 +6,13 @@
 package com.enatbanksc.ATMReconciliation.batch;
 
 
-import com.enatbanksc.ATMReconciliation.etswitch.ETSTransactionService;
-import com.enatbanksc.ATMReconciliation.storage.StorageProperties;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FileSystemUtils;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * @author btinsae
@@ -31,23 +22,42 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
 
-    private final StorageProperties storageProperties;
 
+    private final ETSTransactionService service;
 
-    @SneakyThrows
+    //private final JdbcTemplate jdbcTemplate;
+
+    //    @Autowired
+//    public JobCompletionNotificationListener(JdbcTemplate jdbcTemplate) {
+//        this.jdbcTemplate = jdbcTemplate;
+//    }
     @Override
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
-            if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-                log.info("!!! JOB FINISHED! Time to verify the results");
-                FileSystemUtils.copyRecursively(Path.of(storageProperties.getActive()),
-                        Path.of(storageProperties.getArchive()));
-                Files.walk(Path.of(storageProperties.getActive()))
-                        .filter(Files::isRegularFile)
-                        .map(Path::toFile)
-                        .forEach(File::delete);
-            }
+
+            //   service.getAll().forEach(transaction -> LOG.info("Found <" + transaction + "> in the database."));
+//
+//            jdbcTemplate.query("SELECT * FROM ets_transactions",
+//                    (rs, row) -> new ETSTransaction(
+//                            rs.getString(12),
+//                            rs.getString(5),
+//                            rs.getInt(4),
+//                            rs.getString(8),
+//                            rs.getFloat(6),
+//                            rs.getString(9),
+//                            rs.getDate(16),
+//                            rs.getString(17),
+//                            rs.getString(15),
+//                            rs.getString(18),
+//                            rs.getInt(14),
+//                            rs.getString(13),
+//                            rs.getString(7),
+//                            rs.getString(3),
+//                            rs.getString(2)/*,
+//                            rs.getFloat(10),
+//                            rs.getFloat(11)*/)
+//            ).forEach(transaction -> LOG.info("Found <" + transaction + "> in the database."));
         }
     }
 }

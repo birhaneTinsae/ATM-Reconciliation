@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.enatbanksc.ATMReconciliation.etswitch;
+package com.enatbanksc.ATMReconciliation.local.etswitch;
 
 import io.micrometer.core.lang.Nullable;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,15 +44,16 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
     private String cardNumber;
     private float amount;
     private String currency;
+    @Temporal(TemporalType.TIMESTAMP)
     //   @Column(name = "transaction_date")
-    private LocalDate transactionDate;
+    private Date transactionDate;
     //  @Column(name = "transaction_desc")
     private String transactionDesc;
     //    @Column(name = "terminal_id")
     private String terminalId;
 
     private String transactionPlace;
-    private Integer stan;
+    private int stan;
 
     private String refnumF37;
 
@@ -68,9 +67,34 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
     //  @Column(name = "fee_amount_two")
     private Float feeAmountTwo;
 
+    //
+    public ETSTransaction(String issuer, String acquirer, int MTI, String cardNumber, float amount, String currency,
+                          Date transactionDate, String transactionDesc, String terminalId, String transactionPlace, int stan,
+                          String refnumF37, String authIdRespF38, String FeUtrnno, String BoUtrnno, float feeAmountOne,
+                          float feeAmountTwo) {
+        this.issuer = issuer;
+        this.acquirer = acquirer;
+        this.MTI = MTI;
+        this.cardNumber = cardNumber;
+        this.amount = amount;
+        this.currency = currency;
+        this.transactionDate = transactionDate;
+        this.transactionDesc = transactionDesc;
+        this.terminalId = terminalId;
+        this.transactionPlace = transactionPlace;
+        this.stan = stan;
+        this.refnumF37 = refnumF37;
+        this.authIdRespF38 = authIdRespF38;
+        this.FeUtrnno = FeUtrnno;
+        this.BoUtrnno = BoUtrnno;
+        this.feeAmountOne = feeAmountOne;
+        this.feeAmountTwo = feeAmountTwo;
+    }
+
+    //
     @Override
     public int compareTo(ETSTransaction o) {
-        return o.getStan().compareTo(this.getStan());
+        return this.getStan() > o.getStan() ? -1 : (this.getStan() < o.getStan()) ? 1 : 0;
     }
 
 }
