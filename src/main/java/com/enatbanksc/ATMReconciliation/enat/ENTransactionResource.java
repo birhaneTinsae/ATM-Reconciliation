@@ -70,7 +70,7 @@ public class ENTransactionResource implements Common<ENTransaction> {
         return service.getAll();
     }
 
-    @Override
+
     public Page<ENTransaction> getAll(Pageable pageable) {
         return service.getAll(pageable);
     }

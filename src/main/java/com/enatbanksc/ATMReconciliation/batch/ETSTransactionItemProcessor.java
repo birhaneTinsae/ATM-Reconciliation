@@ -6,6 +6,8 @@
 package com.enatbanksc.ATMReconciliation.batch;
 
 import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
+
+import java.time.LocalDate;
 import java.util.Date;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,7 @@ public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransaction
 		String cardNumber = i.getCardNumber();
 		float amount = i.getAmount();
 		String currency = i.getCurrency();
-		Date transactionDate = i.getTransactionDate();
+		LocalDate transactionDate = i.getTransactionDate();
 		String transactionDesc = i.getTransactionDesc();
 		String terminalId = i.getTerminalId();
 		String transactionPlace = i.getTransactionPlace();

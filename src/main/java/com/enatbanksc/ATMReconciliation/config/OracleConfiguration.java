@@ -1,5 +1,7 @@
 package com.enatbanksc.ATMReconciliation.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -43,11 +45,16 @@ public class OracleConfiguration {
 
         return em;
     }
-
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    public HikariConfig hikariConfig() {
+        return new HikariConfig();
+    }
     @Bean
     @ConfigurationProperties(prefix="spring.second-datasource")
     public DataSource oracleDataSource() {
-        return DataSourceBuilder.create().build();
+        return new HikariDataSource(hikariConfig());
+//        return DataSourceBuilder.create().build();
     }
 
     @Bean

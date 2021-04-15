@@ -8,6 +8,7 @@ package com.enatbanksc.ATMReconciliation.enat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     private float amount;
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "VALUE_DT")
-    private Date transactionDate;
+    private LocalDate transactionDate;
     
 
     @Column(name = "TRN_CODE")

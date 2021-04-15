@@ -8,6 +8,7 @@ package com.enatbanksc.ATMReconciliation.local.etswitch;
 import io.micrometer.core.lang.Nullable;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,9 +45,9 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
     private String cardNumber;
     private float amount;
     private String currency;
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     //   @Column(name = "transaction_date")
-    private Date transactionDate;
+    private LocalDate transactionDate;
     //  @Column(name = "transaction_desc")
     private String transactionDesc;
     //    @Column(name = "terminal_id")
@@ -69,7 +70,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
 
     //
     public ETSTransaction(String issuer, String acquirer, int MTI, String cardNumber, float amount, String currency,
-                          Date transactionDate, String transactionDesc, String terminalId, String transactionPlace, int stan,
+                          LocalDate transactionDate, String transactionDesc, String terminalId, String transactionPlace, int stan,
                           String refnumF37, String authIdRespF38, String FeUtrnno, String BoUtrnno, float feeAmountOne,
                           float feeAmountTwo) {
         this.issuer = issuer;
@@ -94,7 +95,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
     //
     @Override
     public int compareTo(ETSTransaction o) {
-        return this.getStan() > o.getStan() ? -1 : (this.getStan() < o.getStan()) ? 1 : 0;
+        return Integer.compare(o.getStan(), this.getStan());
     }
 
 }

@@ -14,6 +14,8 @@ import com.enatbanksc.ATMReconciliation.storage.StorageService;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -180,14 +182,12 @@ public class FileUploadController {
                         t.setCurrency(cell.getRichStringCellValue().getString());
                         break;
                     case 9:
-                        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+                        var format =  DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss");
+
                          {
-                            try {
-                                t.setTransactionDate(format.parse(cell.getRichStringCellValue().getString()));
-                            } catch (ParseException ex) {
-                                Logger.getLogger(FileUploadController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
+                             //                                t.setTransactionDate(format.parse(cell.getRichStringCellValue().getString()));
+                             t.setTransactionDate(LocalDate.parse(cell.getRichStringCellValue().getString(),format));
+                         }
                         break;
 
                     case 11:

@@ -62,21 +62,21 @@ public class EJUtil {
         String line = null;
 
         Resource ej = null;
-log.debug(ejUri(branchEjDir, branchEjUri, transactionDate));
+        log.debug(ejUri(branchEjDir, branchEjUri, transactionDate));
         try {
             ej = new UrlResource(ejUri(branchEjDir, branchEjUri, transactionDate));
         } catch (MalformedURLException ex) {
             Logger.getLogger(EJUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (!ej.exists()) {
-            log.debug("missing stan {} of transaction date {}", stan,transactionDate);
+            log.debug("missing stan {} of transaction date {}", stan, transactionDate);
             return isPaid(branchEjUri, branchEjDir, stan, incrementDate(transactionDate));
 
         }
 
 
-        if (ej.exists()) {
-            if (ej.isReadable()) {
+        if (ej.exists() && ej.isReadable()) {
+
 
                 try (/*FileInputStream fis = new FileInputStream(ej);*/Scanner input = new Scanner(ej.getInputStream(), "UTF-8"); InputStreamReader file = new InputStreamReader(ej.getInputStream()); BufferedReader reader = new BufferedReader(file)) {
                     while ((line = reader.readLine()) != null) {
@@ -95,7 +95,7 @@ log.debug(ejUri(branchEjDir, branchEjUri, transactionDate));
                             builderString = builder.toString();
 
                             if (builderString.contains(stan) && builderString.contains(NOTES_TAKEN)) {
-                              log.debug("stan {}",stan);
+                                log.debug("stan {}", stan);
                                 return true;
                             }
 
@@ -110,7 +110,7 @@ log.debug(ejUri(branchEjDir, branchEjUri, transactionDate));
                     System.out.println(ex);
                 }
             }
-        }
+
 
         return false;
     }

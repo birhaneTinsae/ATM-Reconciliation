@@ -8,6 +8,12 @@ spring:
 #      resourceserver:
 #        jwt:
 #          issuer-uri: 'http://10.1.12.70:8081/auth/realms/enat'
+  datasource:
+    hikari:
+      maximum-pool-size: 1
+      username: EBFCREAD
+      password: EnatBank#2019
+      jdbc-url: jdbc:oracle:thin:@//10.1.10.20:1521/EBPROD1
   jpa:
     show-sql: true
     hibernate:
