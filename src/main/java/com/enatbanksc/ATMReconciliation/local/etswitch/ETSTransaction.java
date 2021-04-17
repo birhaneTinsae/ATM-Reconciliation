@@ -9,6 +9,7 @@ import io.micrometer.core.lang.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
      */
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String issuer;
     private String acquirer;
@@ -47,7 +48,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
     private String currency;
 //    @Temporal(TemporalType.TIMESTAMP)
     //   @Column(name = "transaction_date")
-    private LocalDate transactionDate;
+    private LocalDateTime transactionDate;
     //  @Column(name = "transaction_desc")
     private String transactionDesc;
     //    @Column(name = "terminal_id")
@@ -70,7 +71,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
 
     //
     public ETSTransaction(String issuer, String acquirer, int MTI, String cardNumber, float amount, String currency,
-                          LocalDate transactionDate, String transactionDesc, String terminalId, String transactionPlace, int stan,
+                          LocalDateTime transactionDate, String transactionDesc, String terminalId, String transactionPlace, int stan,
                           String refnumF37, String authIdRespF38, String FeUtrnno, String BoUtrnno, float feeAmountOne,
                           float feeAmountTwo) {
         this.issuer = issuer;

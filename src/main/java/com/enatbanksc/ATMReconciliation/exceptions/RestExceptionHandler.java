@@ -6,6 +6,7 @@
 package com.enatbanksc.ATMReconciliation.exceptions;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,6 +50,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ApiError(CONFLICT, ex.getMessage(), ex));
     }
 
+    @ExceptionHandler(FlatFileParseException.class)
+    protected ResponseEntity<Object> handleFlatFileParseException(FlatFileParseException ex) {
+        return buildResponseEntity(new ApiError(BAD_REQUEST, ex.getMessage(), ex));
+    }
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(NonUniqueResultException.class)
     protected ResponseEntity<Object> handleEntityExistException(NonUniqueResultException ex) {

@@ -61,7 +61,7 @@ public class MySQLConfiguration {
 
     @Primary
     @Bean
-    public PlatformTransactionManager mssqlTransactionManager() {
+    public PlatformTransactionManager mysqlTransactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(mysqlEntityManager().getObject());
         return transactionManager;

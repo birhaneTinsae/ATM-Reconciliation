@@ -45,16 +45,16 @@ public class OracleConfiguration {
 
         return em;
     }
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
-    public HikariConfig hikariConfig() {
-        return new HikariConfig();
-    }
+    // @Bean
+    // @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    // public HikariConfig hikariConfig() {
+    //     return new HikariConfig();
+    // }
     @Bean
     @ConfigurationProperties(prefix="spring.second-datasource")
     public DataSource oracleDataSource() {
-        return new HikariDataSource(hikariConfig());
-//        return DataSourceBuilder.create().build();
+        // return new HikariDataSource(hikariConfig());
+       return DataSourceBuilder.create().build();
     }
 
     @Bean

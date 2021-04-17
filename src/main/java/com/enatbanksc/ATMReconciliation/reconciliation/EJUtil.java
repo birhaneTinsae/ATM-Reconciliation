@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -52,7 +53,7 @@ public class EJUtil {
     static FileSystemStorageService fileSystemStorage;
 //    
 
-    public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, LocalDate transactionDate) {
+    public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, LocalDateTime transactionDate) {
         /**
          * build ejUri by concatenating
          */
@@ -140,11 +141,11 @@ public class EJUtil {
         return EJ_URI.concat(branchEjDir.concat(branchEjUri.replace(DATE_PLACEHOLDER, dateString)));
     }
 
-    private static URI ejUri(String branchEjDir, String branchEjUri, LocalDate transactionDate) {
+    private static URI ejUri(String branchEjDir, String branchEjUri, LocalDateTime transactionDate) {
         return Paths.get(EJ_URI, branchEjDir.concat(branchEjUri.replace(DATE_PLACEHOLDER, transactionDate.toString()))).toUri();
     }
 
-    private static LocalDate incrementDate(LocalDate date) {
+    private static LocalDateTime incrementDate(LocalDateTime date) {
         return date.plusDays(1);
     }
 

@@ -41,7 +41,7 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     private String branch;
     @Column(name = "LCY_AMOUNT")
     private float amount;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    // @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "VALUE_DT")
     private LocalDate transactionDate;
     

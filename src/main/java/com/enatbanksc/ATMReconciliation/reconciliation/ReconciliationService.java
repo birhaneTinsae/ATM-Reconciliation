@@ -130,7 +130,7 @@ public class ReconciliationService {
             Branch branch = branchService.getBranchByCode(eNTransaction.getBranch());
             return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
                     String.valueOf(eNTransaction.getStan()),
-                    eNTransaction.getTransactionDate());
+                    eNTransaction.getTransactionDate().atStartOfDay());
         } else {
 
             ETSTransaction estTransaction = (ETSTransaction) transaction;

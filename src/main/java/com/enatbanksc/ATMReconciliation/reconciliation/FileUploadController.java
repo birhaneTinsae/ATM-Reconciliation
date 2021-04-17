@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -51,19 +53,15 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class FileUploadController {
 
     private final StorageService storageService;
-    @Autowired
-    private ETSTransactionService mService;
+    private final ETSTransactionService mService;
 
-    @Autowired
-    public FileUploadController(StorageService storageService) {
-        this.storageService = storageService;
-    }
 
     @GetMapping("/")
-    public String listUploadedFiles(Model model) throws IOException {
+    public String listUploadedFiles(Model model) {
 
         model.addAttribute("files", storageService.loadAll().map(
                 path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
@@ -84,7 +82,7 @@ public class FileUploadController {
 
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+                                   RedirectAttributes redirectAttributes) throws IOException {
 
         storageService.store(file);
         /**
@@ -96,7 +94,7 @@ public class FileUploadController {
         /**
          * passing uploaded xlx or xlxs file will return List<ETSTransaction>
          */
-        getTransactions(fileResource).forEach(t -> mService.store(t));
+        getTransactions(fileResource).forEach(mService::store);
 
         //FileInputStream fis = (FileInFputStream) fileResource.getInputStream();
         /**
@@ -182,12 +180,8 @@ public class FileUploadController {
                         t.setCurrency(cell.getRichStringCellValue().getString());
                         break;
                     case 9:
-                        var format =  DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss");
-
-                         {
-                             //                                t.setTransactionDate(format.parse(cell.getRichStringCellValue().getString()));
-                             t.setTransactionDate(LocalDate.parse(cell.getRichStringCellValue().getString(),format));
-                         }
+                        var format = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss");
+                        t.setTransactionDate(LocalDateTime.parse(cell.getRichStringCellValue().getString(), format));
                         break;
 
                     case 11:

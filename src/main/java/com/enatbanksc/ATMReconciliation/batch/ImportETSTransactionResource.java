@@ -35,10 +35,8 @@ public class ImportETSTransactionResource {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping()
-    public String importESTransactions(
-            @RequestParam("import_date")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date importDate) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-        JobParameters jobParameters = new JobParametersBuilder().addDate("import_date", importDate)
+    public String importESTransactions() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+        JobParameters jobParameters = new JobParametersBuilder().addDate("import_date", new Date())
                 .toJobParameters();
 
         jobLauncher.run(job, jobParameters);

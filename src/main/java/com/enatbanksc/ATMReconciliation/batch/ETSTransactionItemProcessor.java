@@ -8,7 +8,11 @@ package com.enatbanksc.ATMReconciliation.batch;
 import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionInput;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
@@ -18,17 +22,18 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  */
 @Component
-public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransaction, ETSTransaction> {
+public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransactionInput, ETSTransaction> {
 
 	@Override
-	public ETSTransaction process(ETSTransaction i) {
+	public ETSTransaction process(ETSTransactionInput i) {
 		String issuer = i.getIssuer();
 		String acquirer = i.getAcquirer();
 		int MTI = i.getMTI();
 		String cardNumber = i.getCardNumber();
 		float amount = i.getAmount();
 		String currency = i.getCurrency();
-		LocalDate transactionDate = i.getTransactionDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+		LocalDateTime transactionDate = LocalDateTime.parse(i.getTransactionDate(),formatter);
 		String transactionDesc = i.getTransactionDesc();
 		String terminalId = i.getTerminalId();
 		String transactionPlace = i.getTransactionPlace();
