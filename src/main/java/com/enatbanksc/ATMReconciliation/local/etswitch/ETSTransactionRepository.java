@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public interface ETSTransactionRepository extends PagingAndSortingRepository<ETS
      * @param branch
      * @return
      */
-    List<ETSTransaction> findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(LocalDate from, LocalDate to, String branch);
+    List<ETSTransaction> findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(LocalDateTime from, LocalDateTime to, String branch);
     @Query(value="SELECT DATE(transactionDate) AS dateonly FROM ets_transactions GROUP BY date(transactionDate) ORDER BY transactionDate DESC LIMIT 6",nativeQuery = true)
     List<LocalDate> loadedTransactionsDate();
 

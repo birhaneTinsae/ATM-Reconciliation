@@ -71,6 +71,6 @@ public class BranchService implements Common<Branch> {
     }
 
     public Branch getBranchByCode(String code) {
-        return repository.findByCode(code);
+        return repository.findByCode(code).orElseThrow(()->new EntityNotFoundException(Branch.class,"Code",code));
     }
 }

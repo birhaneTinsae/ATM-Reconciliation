@@ -32,6 +32,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.isNull;
+
 /**
  * @author btinsae
  */
@@ -53,7 +55,7 @@ public class EJUtil {
     static FileSystemStorageService fileSystemStorage;
 //    
 
-    public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, LocalDateTime transactionDate) {
+    public static boolean isPaid(String branchEjUri, String branchEjDir, String stan, LocalDate transactionDate) {
         /**
          * build ejUri by concatenating
          */
@@ -69,6 +71,7 @@ public class EJUtil {
         } catch (MalformedURLException ex) {
             Logger.getLogger(EJUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if(isNull(ej)) return  true;
         if (!ej.exists()) {
             log.debug("missing stan {} of transaction date {}", stan, transactionDate);
             return isPaid(branchEjUri, branchEjDir, stan, incrementDate(transactionDate));
@@ -141,11 +144,11 @@ public class EJUtil {
         return EJ_URI.concat(branchEjDir.concat(branchEjUri.replace(DATE_PLACEHOLDER, dateString)));
     }
 
-    private static URI ejUri(String branchEjDir, String branchEjUri, LocalDateTime transactionDate) {
+    private static URI ejUri(String branchEjDir, String branchEjUri, LocalDate transactionDate) {
         return Paths.get(EJ_URI, branchEjDir.concat(branchEjUri.replace(DATE_PLACEHOLDER, transactionDate.toString()))).toUri();
     }
 
-    private static LocalDateTime incrementDate(LocalDateTime date) {
+    private static LocalDate incrementDate(LocalDate date) {
         return date.plusDays(1);
     }
 

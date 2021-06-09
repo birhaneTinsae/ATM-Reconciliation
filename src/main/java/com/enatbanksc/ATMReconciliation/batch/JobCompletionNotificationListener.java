@@ -6,7 +6,6 @@
 package com.enatbanksc.ATMReconciliation.batch;
 
 
-import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionService;
 import com.enatbanksc.ATMReconciliation.storage.StorageProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author btinsae
@@ -34,7 +34,17 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
             try {
-                FileSystemUtils.copyRecursively(Path.of(storageProperties.getActive()),Path.of(storageProperties.getArchive()));
+                Files.walk(Paths.get(/*storageProperties.getActive()*/"C:/Users/btinsae/Desktop/atm-reconcilation/active"))
+                        .forEach(source -> {
+                            Path destination = Paths.get(/*storageProperties.getArchive()*/"C:/Users/btinsae/Desktop/atm-reconcilation/archive", source.toString()
+                                    .substring(/*storageProperties.getActive()*/"C:/Users/btinsae/Desktop/atm-reconcilation/active".length()));
+                            try {
+                                Files.copy(source, destination);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+//                FileSystemUtils.copyRecursively(Path.of(storageProperties.getActive()),Path.of(storageProperties.getArchive()));
                 Files.walk(Path.of(storageProperties.getActive()))
                         .filter(Files::isRegularFile)
                         .map(Path::toFile)

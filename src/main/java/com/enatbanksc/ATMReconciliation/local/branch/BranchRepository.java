@@ -8,6 +8,8 @@ package com.enatbanksc.ATMReconciliation.local.branch;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  *
  * @author btinsae
@@ -15,5 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BranchRepository extends PagingAndSortingRepository<Branch, Integer> {
     Branch findByTerminalId(String terminalId);
-    Branch findByCode(String code);
+    Optional<Branch> findByCode(String code);
 }

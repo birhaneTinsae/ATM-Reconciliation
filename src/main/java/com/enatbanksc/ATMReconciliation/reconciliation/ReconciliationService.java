@@ -130,14 +130,14 @@ public class ReconciliationService {
             Branch branch = branchService.getBranchByCode(eNTransaction.getBranch());
             return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
                     String.valueOf(eNTransaction.getStan()),
-                    eNTransaction.getTransactionDate().atStartOfDay());
+                    eNTransaction.getTransactionDate().atStartOfDay().toLocalDate());
         } else {
 
             ETSTransaction estTransaction = (ETSTransaction) transaction;
             Branch branch = branchService.getBranchByTerminalId(estTransaction.getTerminalId());
             return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
                     String.valueOf(estTransaction.getStan()),
-                    estTransaction.getTransactionDate());
+                    estTransaction.getTransactionDate().toLocalDate());
 
         }
 
@@ -187,8 +187,8 @@ public class ReconciliationService {
      */
     public List<ETSTransaction> getPosts(List<ENTransaction> transactions,
                                          List<ETSTransaction> etsts) {
-        log.info(String.format("CBS transaction %d",transactions.size()));
-        log.info(String.format("EtSwitch transaction %d",etsts.size()));
+        log.info("CBS transaction {}",transactions.size());
+        log.info("EtSwitch transaction {}",etsts.size());
         return getTransactionsMissingFromENT(transactions, etsts);
     }
 

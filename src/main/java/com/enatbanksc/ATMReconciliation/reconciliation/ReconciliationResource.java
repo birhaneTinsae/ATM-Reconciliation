@@ -53,18 +53,17 @@ public class ReconciliationResource {
                 eTSTransactionService.getTransactionsBetween(fromDate, newToDate));
     }
 
-    @GetMapping("/posts/{branchId}")
+    @GetMapping("/posts/{branchCode}")
     public @ResponseBody
     List<ETSTransaction> getPosts(
             @RequestParam("from_date")
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
             @RequestParam("to_date")
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
-            @PathVariable String branchId) {
-
+            @PathVariable String branchCode) {
         return service.getPosts(
-                eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                eTSTransactionService.getTransactionsBetween(fromDate, toDate, branchService.show(Integer.parseInt(branchId)).getTerminalId())
+                eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchCode),
+                eTSTransactionService.getTransactionsBetween(fromDate, toDate,branchCode)
         );
 
     }
@@ -97,7 +96,7 @@ public class ReconciliationResource {
         LocalDate newToDate = incrementDateByOne(toDate);
         return service.getClaims(
                 eNTransactionService.getEntTransactionBetween(fromDate, toDate, branchId),
-                eTSTransactionService.getTransactionsBetween(fromDate, newToDate, branchService.show(Integer.parseInt(branchId)).getTerminalId()));
+                eTSTransactionService.getTransactionsBetween(fromDate, newToDate, branchId));
     }
 
     private LocalDate incrementDateByOne(LocalDate date) {

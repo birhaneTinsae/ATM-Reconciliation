@@ -82,7 +82,6 @@ public class ENTransactionService implements Common<ENTransaction> {
     }
 
     public List<ENTransaction> getEntTransactionBetween(LocalDate fromDate, LocalDate toDate, String branch) {
-       // return repository.findByTransactionDateGreaterThanAndTransactionDateLessThanAndBranch(fromDate, toDate, branch);
         return repository.findByTransactionDateBetweenAndBranchOrderById(fromDate, toDate, branch);
     }
 

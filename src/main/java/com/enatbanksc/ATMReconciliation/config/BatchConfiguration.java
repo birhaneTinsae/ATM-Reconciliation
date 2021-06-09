@@ -167,7 +167,7 @@ public class BatchConfiguration {
 
     public Resource[] loadResources() throws IOException {
         return ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                .getResources(/*storageProperties.getEjFiles()*/"file:C:/Users/birhane/Desktop/atm-reconciliation/active/*.csv");
+                .getResources(/*storageProperties.getEjFiles()*/"file:C:/Users/btinsae/Desktop/atm-reconcilation/active/*.csv");
     }
 
 

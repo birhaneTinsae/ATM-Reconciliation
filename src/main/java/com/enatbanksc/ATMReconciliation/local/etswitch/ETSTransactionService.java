@@ -8,6 +8,7 @@ package com.enatbanksc.ATMReconciliation.local.etswitch;
 import com.enatbanksc.ATMReconciliation.local.branch.Branch;
 import com.enatbanksc.ATMReconciliation.local.branch.BranchRepository;
 import com.enatbanksc.ATMReconciliation.exceptions.EntityNotFoundException;
+import com.enatbanksc.ATMReconciliation.local.branch.BranchService;
 import com.enatbanksc.ATMReconciliation.utils.Common;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,7 +26,7 @@ import java.util.List;
 public class ETSTransactionService implements Common<ETSTransaction> {
 
     private final ETSTransactionRepository repository;
-    private final BranchRepository branchRepository;
+    private final BranchService branchService;
 
     /**
      * @param t
@@ -80,8 +81,8 @@ public class ETSTransactionService implements Common<ETSTransaction> {
      * @return
      */
     public List<ETSTransaction> getTransactionsBetween(LocalDate from, LocalDate to, String branchCode) {
-        Branch branch = branchRepository.findByCode(branchCode);
-        return repository.findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(from, to, branch.getTerminalId());
+        Branch branch = branchService.getBranchByCode(branchCode);
+        return repository.findByTransactionDateBetweenAndTerminalIdOrderByTransactionDate(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), branch.getTerminalId());
     }
 
     public List<ETSTransaction> getTransactionsBetween(LocalDate from, LocalDate to) {

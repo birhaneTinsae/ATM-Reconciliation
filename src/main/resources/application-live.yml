@@ -1,8 +1,7 @@
 server:
   port: 8181
 spring:
-  config:
-    use-legacy-processing: true
+
   application:
     name: "ATM-RECONCILIATION"
 #  security:
@@ -53,7 +52,7 @@ springdoc:
   swagger-ui:
     enabled: true
 storage:
-  location: C:/Users/birhane/Desktop/atm-reconciliation/active
-  active: C:/Users/birhane/Desktop/atm-reconciliation/active
-  archive: C:/Users/birhane/Desktop/atm-reconciliation/active
+  location: C:/Users/btinsae/Desktop/atm-reconcilation/active
+  active: C:/Users/btinsae/Desktop/atm-reconcilation/active
+  archive: C:/Users/btinsae/Desktop/atm-reconcilation/archive
   ejFiles: file:${storage.active}/*.csv
