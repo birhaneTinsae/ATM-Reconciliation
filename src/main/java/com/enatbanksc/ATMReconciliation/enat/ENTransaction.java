@@ -44,8 +44,8 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     // @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "VALUE_DT")
     private LocalDate transactionDate;
-    
-
+    @Column(name = "RRN")
+    private int rrn;
     @Column(name = "TRN_CODE")
     private String transactionCode;
 

@@ -5,20 +5,18 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
+import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
 import com.enatbanksc.ATMReconciliation.local.branch.Branch;
 import com.enatbanksc.ATMReconciliation.local.branch.BranchService;
-import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
 import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.utils.SearchTransaction;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.sun.istack.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author btinsae
@@ -89,7 +87,7 @@ public class ReconciliationService {
         return enatTransactions.stream()
                 .filter(entTransaction
                         -> (SearchTransaction.searchETSTransaction(etsts,
-                        entTransaction.getStan())))
+                        entTransaction.getRrn())))
                 .collect(Collectors.toList());
 
     }
@@ -112,7 +110,7 @@ public class ReconciliationService {
         return etsts.stream()
                 .filter(etsTransaction
                         -> (!SearchTransaction.searchENTransaction(eNTransactions,
-                        etsTransaction.getStan())))
+                        etsTransaction.getRefnumF37())))
                 .collect(Collectors.toList());
 
     }
@@ -187,14 +185,11 @@ public class ReconciliationService {
      */
     public List<ETSTransaction> getPosts(List<ENTransaction> transactions,
                                          List<ETSTransaction> etsts) {
-        log.info("CBS transaction {}",transactions.size());
-        log.info("EtSwitch transaction {}",etsts.size());
         return getTransactionsMissingFromENT(transactions, etsts);
     }
 
     public List<ENTransaction> getATMTransactions(List<ENTransaction> transactions,
                                                   List<ETSTransaction> etsts) {
-        log.info(etsts.size());
         return getSuccessfulATMTransactions(transactions, etsts);
     }
 }

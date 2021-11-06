@@ -34,7 +34,7 @@ public class SearchTransaction {
         }
         return SortTransactions.sortETSTransactions(transactions)
                 .stream()
-                .anyMatch(transaction -> transaction.getStan() == stan);
+                .anyMatch(transaction -> transaction.getRefnumF37() == stan);
     }
 
     /**
@@ -51,6 +51,6 @@ public class SearchTransaction {
 
         return SortTransactions.sortENTransactions(transactions)
                 .stream()
-                .anyMatch(transaction -> transaction.getStan() == stan);
+                .anyMatch(transaction -> transaction.getRrn() == stan);
     }
 }
