@@ -45,7 +45,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
     private String terminalId;
     private String transactionPlace;
     private int stan;
-    private int refnumF37;
+    private String refnumF37;
     private String authIdRespF38;
     private String FeUtrnno;
     private String BoUtrnno;
@@ -54,7 +54,7 @@ public class ETSTransaction implements Serializable, Comparable<ETSTransaction> 
 
     public ETSTransaction(String issuer, String acquirer, int MTI, String cardNumber, float amount, String currency,
                           LocalDateTime transactionDate, String transactionDesc, String terminalId, String transactionPlace, int stan,
-                          int refnumF37, String authIdRespF38, String FeUtrnno, String BoUtrnno, float feeAmountOne,
+                          String refnumF37, String authIdRespF38, String FeUtrnno, String BoUtrnno, float feeAmountOne,
                           float feeAmountTwo) {
         this.issuer = issuer;
         this.acquirer = acquirer;

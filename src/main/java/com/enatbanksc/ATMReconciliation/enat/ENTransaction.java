@@ -45,7 +45,7 @@ public class ENTransaction implements Serializable, Comparable<ENTransaction> {
     @Column(name = "VALUE_DT")
     private LocalDate transactionDate;
     @Column(name = "RRN")
-    private int rrn;
+    private String rrn;
     @Column(name = "TRN_CODE")
     private String transactionCode;
 

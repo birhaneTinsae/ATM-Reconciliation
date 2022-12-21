@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class ReconciliationService {
      * @param etsts            list of ETSwitch transaction within the given dates.
      * @return list of missing transactions from ETS
      */
-    private List<ENTransaction> getTransactionsMissingFromETSNotPaid(List<ENTransaction> enatTransactions,
+    private List<ENTransaction> getTransactionsMissingFromETSNotPaid(@javax.validation.constraints.NotNull() @NotEmpty() List<ENTransaction> enatTransactions,
                                                                      List<ETSTransaction> etsts) {
         if (enatTransactions == null || enatTransactions.isEmpty()) {
             return null;
@@ -46,13 +47,13 @@ public class ReconciliationService {
         return enatTransactions.stream()
                 .filter(entTransaction
                         -> (!SearchTransaction.searchETSTransaction(etsts,
-                        entTransaction.getStan())))
+                        entTransaction.getRrn())))
                 .filter(entTransaction -> !isPaid(entTransaction))
                 .collect(Collectors.toList());
 
     }
 
-    private List<ENTransaction> getTransactionsMissingFromETSPaid(List<ENTransaction> enatTransactions,
+    private List<ENTransaction> getTransactionsMissingFromETSPaid(@javax.validation.constraints.NotNull() @NotEmpty() List<ENTransaction> enatTransactions,
                                                                   List<ETSTransaction> etsts) {
         if (enatTransactions == null || enatTransactions.isEmpty()) {
             return null;
@@ -61,7 +62,7 @@ public class ReconciliationService {
         return enatTransactions.stream()
                 .filter(entTransaction
                         -> (!SearchTransaction.searchETSTransaction(etsts,
-                        entTransaction.getStan())))
+                        entTransaction.getRrn())))
                 .filter(this::isPaid)
                 .collect(Collectors.toList());
 
@@ -100,7 +101,7 @@ public class ReconciliationService {
      * @param etsts          list of ETSwitch transaction within the given dates.
      * @return list of missing transactions from ENAT CBS.
      */
-    private List<ETSTransaction> getTransactionsMissingFromENT(List<ENTransaction> eNTransactions,
+    private List<ETSTransaction> getTransactionsMissingFromENT(@javax.validation.constraints.NotNull() @NotEmpty()List<ENTransaction> eNTransactions,
                                                                List<ETSTransaction> etsts) {
 
         if (eNTransactions == null || eNTransactions.isEmpty()) {
