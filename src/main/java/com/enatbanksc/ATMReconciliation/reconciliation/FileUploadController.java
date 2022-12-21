@@ -5,26 +5,18 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransactionService;
+
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionService;
 import com.enatbanksc.ATMReconciliation.storage.StorageFileNotFoundException;
 import com.enatbanksc.ATMReconciliation.storage.StorageService;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,20 +26,42 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import lombok.RequiredArgsConstructor;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+import org.apache.poi.ss.usermodel.Workbook;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Controller
+@RequiredArgsConstructor
 public class FileUploadController {
 
     private final StorageService storageService;
-    @Autowired
-    private ETSTransactionService mService;
+    private final ETSTransactionService mService;
 
-    @Autowired
-    public FileUploadController(StorageService storageService) {
-        this.storageService = storageService;
-    }
 
     @GetMapping("/")
-    public String listUploadedFiles(Model model) throws IOException {
+    public String listUploadedFiles(Model model) {
 
         model.addAttribute("files", storageService.loadAll().map(
                 path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
@@ -68,7 +82,7 @@ public class FileUploadController {
 
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+                                   RedirectAttributes redirectAttributes) throws IOException {
 
         storageService.store(file);
         /**
@@ -80,7 +94,7 @@ public class FileUploadController {
         /**
          * passing uploaded xlx or xlxs file will return List<ETSTransaction>
          */
-        getTransactions(fileResource).forEach(t -> mService.store(t));
+        getTransactions(fileResource).forEach(mService::store);
 
         //FileInputStream fis = (FileInFputStream) fileResource.getInputStream();
         /**
@@ -166,14 +180,8 @@ public class FileUploadController {
                         t.setCurrency(cell.getRichStringCellValue().getString());
                         break;
                     case 9:
-                        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
-                         {
-                            try {
-                                t.setTransactionDate(format.parse(cell.getRichStringCellValue().getString()));
-                            } catch (ParseException ex) {
-                                Logger.getLogger(FileUploadController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
+                        var format = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss");
+                        t.setTransactionDate(LocalDateTime.parse(cell.getRichStringCellValue().getString(), format));
                         break;
 
                     case 11:

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.enatbanksc.ATMReconciliation.branch;
+package com.enatbanksc.ATMReconciliation.local.branch;
 
 import lombok.Data;
 
@@ -34,5 +34,5 @@ public class Branch implements Serializable {
     private String ejDirectory;
     private String terminalId;
 
-
+    
 }

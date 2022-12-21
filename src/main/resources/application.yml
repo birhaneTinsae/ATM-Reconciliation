@@ -1,0 +1,59 @@
+server:
+  port: 8181
+spring:
+  config:
+    use-legacy-processing: true
+  application:
+    name: "ATM-RECONCILIATION"
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: 'http://10.1.12.70:8081/auth/realms/enat'
+  datasource:
+    hikari:
+      maximum-pool-size: 1
+      username: EBFCREAD
+      password: EnatBank#2019
+      jdbc-url: jdbc:oracle:thin:@//10.1.10.8:1521/EBPRODSTDBY
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+  batch:
+    job:
+      enabled: false
+    initialize-schema: always
+application:
+  allowedOrigin:
+    - 'http://196.189.90.121:71'
+    - 'http://localhost:4200'
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://10.1.12.70:8761/eureka}
+  instance:
+    preferIpAddress: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+storage:
+  location: C:/Users/birhane/Desktop/atm-reconciliation/active
+  active: C:/Users/birhane/Desktop/atm-reconciliation/active
+  archive: C:/Users/birhane/Desktop/atm-reconciliation/active
+  ejFiles: file:${storage.active}/*.csv

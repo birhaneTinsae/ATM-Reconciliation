@@ -5,38 +5,41 @@
  */
 package com.enatbanksc.ATMReconciliation.reconciliation;
 
-import com.enatbanksc.ATMReconciliation.branch.Branch;
-import com.enatbanksc.ATMReconciliation.branch.BranchService;
-import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
+import com.enatbanksc.ATMReconciliation.local.branch.Branch;
+import com.enatbanksc.ATMReconciliation.local.branch.BranchService;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
 import com.enatbanksc.ATMReconciliation.utils.SearchTransaction;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sun.istack.NotNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
- *
  * @author btinsae
  * @version 1.0
- *
  */
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class ReconciliationService {
 
-    @Autowired
-    BranchService branchService;
+    private final BranchService branchService;
 
     /**
      * Search transactions that exist in CBS but missed from Switch vendor
      *
      * @param enatTransactions list of ENAT CBS transactions within the given
-     * dates.
-     * @param etsts list of ETSwitch transaction within the given dates.
+     *                         dates.
+     * @param etsts            list of ETSwitch transaction within the given dates.
      * @return list of missing transactions from ETS
      */
-    private List<ENTransaction> getTransactionsMissingFromETSNotPaid(List<ENTransaction> enatTransactions,
-            List<ETSTransaction> etsts) {
+    private List<ENTransaction> getTransactionsMissingFromETSNotPaid(@javax.validation.constraints.NotNull() @NotEmpty() List<ENTransaction> enatTransactions,
+                                                                     List<ETSTransaction> etsts) {
         if (enatTransactions == null || enatTransactions.isEmpty()) {
             return null;
         }
@@ -44,14 +47,14 @@ public class ReconciliationService {
         return enatTransactions.stream()
                 .filter(entTransaction
                         -> (!SearchTransaction.searchETSTransaction(etsts,
-                        entTransaction.getStan())))
+                        entTransaction.getRrn())))
                 .filter(entTransaction -> !isPaid(entTransaction))
                 .collect(Collectors.toList());
 
     }
 
-    private List<ENTransaction> getTransactionsMissingFromETSPaid(List<ENTransaction> enatTransactions,
-            List<ETSTransaction> etsts) {
+    private List<ENTransaction> getTransactionsMissingFromETSPaid(@javax.validation.constraints.NotNull() @NotEmpty() List<ENTransaction> enatTransactions,
+                                                                  List<ETSTransaction> etsts) {
         if (enatTransactions == null || enatTransactions.isEmpty()) {
             return null;
         }
@@ -59,8 +62,8 @@ public class ReconciliationService {
         return enatTransactions.stream()
                 .filter(entTransaction
                         -> (!SearchTransaction.searchETSTransaction(etsts,
-                        entTransaction.getStan())))
-                .filter(entTransaction -> isPaid(entTransaction))
+                        entTransaction.getRrn())))
+                .filter(this::isPaid)
                 .collect(Collectors.toList());
 
     }
@@ -75,17 +78,17 @@ public class ReconciliationService {
      * @return
      */
     private List<ENTransaction> getSuccessfulATMTransactions(
-            List<ENTransaction> enatTransactions,
+            @NotNull List<ENTransaction> enatTransactions,
             List<ETSTransaction> etsts) {
         if ((enatTransactions == null || enatTransactions.isEmpty())
-                && (etsts.isEmpty() )) {
+                && (etsts.isEmpty())) {
             return null;
         }
 
         return enatTransactions.stream()
                 .filter(entTransaction
                         -> (SearchTransaction.searchETSTransaction(etsts,
-                        entTransaction.getStan())))
+                        entTransaction.getRrn())))
                 .collect(Collectors.toList());
 
     }
@@ -94,12 +97,12 @@ public class ReconciliationService {
      * Search transactions that exist in Switch vendor but missed from CBS.
      *
      * @param eNTransactions list of ENAT CBS transactions within the given
-     * dates.
-     * @param etsts list of ETSwitch transaction within the given dates.
+     *                       dates.
+     * @param etsts          list of ETSwitch transaction within the given dates.
      * @return list of missing transactions from ENAT CBS.
      */
-    private List<ETSTransaction> getTransactionsMissingFromENT(List<ENTransaction> eNTransactions,
-            List<ETSTransaction> etsts) {
+    private List<ETSTransaction> getTransactionsMissingFromENT(@javax.validation.constraints.NotNull() @NotEmpty()List<ENTransaction> eNTransactions,
+                                                               List<ETSTransaction> etsts) {
 
         if (eNTransactions == null || eNTransactions.isEmpty()) {
             return null;
@@ -108,7 +111,7 @@ public class ReconciliationService {
         return etsts.stream()
                 .filter(etsTransaction
                         -> (!SearchTransaction.searchENTransaction(eNTransactions,
-                        etsTransaction.getStan())))
+                        etsTransaction.getRefnumF37())))
                 .collect(Collectors.toList());
 
     }
@@ -126,14 +129,14 @@ public class ReconciliationService {
             Branch branch = branchService.getBranchByCode(eNTransaction.getBranch());
             return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
                     String.valueOf(eNTransaction.getStan()),
-                    eNTransaction.getTransactionDate());
+                    eNTransaction.getTransactionDate().atStartOfDay().toLocalDate());
         } else {
 
             ETSTransaction estTransaction = (ETSTransaction) transaction;
             Branch branch = branchService.getBranchByTerminalId(estTransaction.getTerminalId());
             return EJUtil.isPaid(branch.getEjUri(), branch.getEjDirectory(),
                     String.valueOf(estTransaction.getStan()),
-                    estTransaction.getTransactionDate());
+                    estTransaction.getTransactionDate().toLocalDate());
 
         }
 
@@ -145,13 +148,13 @@ public class ReconciliationService {
      * vendor(ETSWITCH).
      *
      * @param enTransactions list of ENAT CBS transactions within the given
-     * dates.
-     * @param etsts list of ETSwitch transaction within the given dates.
+     *                       dates.
+     * @param etsts          list of ETSwitch transaction within the given dates.
      * @return List of ENTransaction that are not paid and not recognized by
      * Switch vendor(ETSWITCH).
      */
     public List<ENTransaction> getReversals(List<ENTransaction> enTransactions,
-            List<ETSTransaction> etsts) {
+                                            List<ETSTransaction> etsts) {
 
         return getTransactionsMissingFromETSNotPaid(enTransactions, etsts);
     }
@@ -162,8 +165,8 @@ public class ReconciliationService {
      * vendor(ETSWITCH)
      *
      * @param enTransactions list of ENAT CBS transactions within the given
-     * dates.
-     * @param etsts list of ETSwitch transaction within the given dates.
+     *                       dates.
+     * @param etsts          list of ETSwitch transaction within the given dates.
      * @return List of ENTransaction that are paid and not recognized by switch
      * vendor(ETSWITCH)
      */
@@ -178,18 +181,16 @@ public class ReconciliationService {
      * on ENT CBS.
      *
      * @param transactions list of ENAT CBS transactions within the given dates.
-     * @param etsts list of ETSwitch transaction within the given dates.
+     * @param etsts        list of ETSwitch transaction within the given dates.
      * @return List ETSTransaction.
      */
     public List<ETSTransaction> getPosts(List<ENTransaction> transactions,
-            List<ETSTransaction> etsts) {
-
+                                         List<ETSTransaction> etsts) {
         return getTransactionsMissingFromENT(transactions, etsts);
     }
 
     public List<ENTransaction> getATMTransactions(List<ENTransaction> transactions,
-            List<ETSTransaction> etsts) {
-
+                                                  List<ETSTransaction> etsts) {
         return getSuccessfulATMTransactions(transactions, etsts);
     }
 }

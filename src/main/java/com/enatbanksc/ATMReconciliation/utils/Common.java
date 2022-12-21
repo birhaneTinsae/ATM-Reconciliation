@@ -22,7 +22,7 @@ public interface Common<T> {
      *
      * @return
      */
-    List<T> getAll();
+    Iterable<T> getAll();
     
             
 }

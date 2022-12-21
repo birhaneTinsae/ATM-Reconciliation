@@ -5,8 +5,14 @@
  */
 package com.enatbanksc.ATMReconciliation.batch;
 
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransactionInput;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +22,18 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  */
 @Component
-public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransaction, ETSTransaction> {
+public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransactionInput, ETSTransaction> {
 
 	@Override
-	public ETSTransaction process(ETSTransaction i) throws Exception {
+	public ETSTransaction process(ETSTransactionInput i) {
 		String issuer = i.getIssuer();
 		String acquirer = i.getAcquirer();
 		int MTI = i.getMTI();
 		String cardNumber = i.getCardNumber();
 		float amount = i.getAmount();
 		String currency = i.getCurrency();
-		Date transactionDate = i.getTransactionDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+		LocalDateTime transactionDate = LocalDateTime.parse(i.getTransactionDate(),formatter);
 		String transactionDesc = i.getTransactionDesc();
 		String terminalId = i.getTerminalId();
 		String transactionPlace = i.getTransactionPlace();
@@ -37,10 +44,9 @@ public class ETSTransactionItemProcessor implements ItemProcessor<ETSTransaction
 		String BoUtrnno = i.getBoUtrnno();
 		float feeAmountOne = i.getFeeAmountOne();
 		float feeAmountTwo = i.getFeeAmountTwo();
-		ETSTransaction transformedTransaction = new ETSTransaction(issuer, acquirer, MTI, cardNumber, amount, currency,
+		return new ETSTransaction(issuer, acquirer, MTI, cardNumber, amount, currency,
 				transactionDate, transactionDesc, terminalId, transactionPlace, stan, refnumF37, authIdRespF38,
 				FeUtrnno, BoUtrnno, feeAmountOne, feeAmountTwo);
-		return transformedTransaction;
 	}
 
 }

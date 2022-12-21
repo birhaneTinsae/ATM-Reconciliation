@@ -5,8 +5,9 @@
  */
 package com.enatbanksc.ATMReconciliation.utils;
 
-import com.enatbanksc.ATMReconciliation.enat.transaction.ENTransaction;
-import com.enatbanksc.ATMReconciliation.etswitch.transaction.ETSTransaction;
+import com.enatbanksc.ATMReconciliation.enat.ENTransaction;
+import com.enatbanksc.ATMReconciliation.local.etswitch.ETSTransaction;
+
 import java.util.List;
 
 /**
@@ -17,43 +18,39 @@ import java.util.List;
 
 public class SearchTransaction {
 
-//    @Autowired
-//    private SortTransactions sort;
 
-//    public SearchTransaction(SortTransactions sort) {
-//        this.sort = sort;
-//    }
+    private SearchTransaction() {
+    }
     /**
-     * Search for the transaction given stan
+     * Search for the transaction given rrn
      *
      * @param transactions
-     * @param stan
+     * @param rrn
      * @return true if the transaction is found else false.
      */
-    public static boolean searchETSTransaction(List<ETSTransaction> transactions, int stan) {
+    public static boolean searchETSTransaction(List<ETSTransaction> transactions, String rrn) {
         if (transactions == null || transactions.isEmpty()) {
             return false;
         }
         return SortTransactions.sortETSTransactions(transactions)
                 .stream()
-                .filter(transaction -> transaction.getStan() == stan)
-                .findFirst().isPresent();// != "";
+                .anyMatch(transaction -> transaction.getRefnumF37().equals(rrn));
     }
 
     /**
-     * Search for the transaction given stan
+     * Search for the transaction given refNum37
      *
      * @param transactions
-     * @param stan
+     * @param refNum37
      * @return true if the transaction is found else false.
      */
-    public static boolean searchENTransaction( List<ENTransaction> transactions, int stan) {
+    public static boolean searchENTransaction( List<ENTransaction> transactions, String refNum37) {
         if (transactions == null || transactions.isEmpty()) {
             return false;
         }
+
         return SortTransactions.sortENTransactions(transactions)
                 .stream()
-                .filter(transaction -> transaction.getStan() == stan)
-                .findFirst().isPresent();
+                .anyMatch(transaction -> transaction.getRrn().equals(refNum37));
     }
 }
